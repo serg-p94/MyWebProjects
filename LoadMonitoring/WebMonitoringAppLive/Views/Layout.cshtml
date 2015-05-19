@@ -1,0 +1,38 @@
+﻿@using WebMonitoringAppLive.Helper
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script type="text/javascript" src="/Static/jquery-2.1.3.js"></script>
+    <script type="text/javascript" src="/Static/Bootstrap/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="/Static/Bootstrap/css/bootstrap.min.css" />
+
+    <title>@ViewBag.Title</title>
+</head>
+<body>
+    <div class="container">
+        <div>
+            <ul class="nav nav-pills pull-right">
+                <li class="@(ViewBag.MenuItem == MenuItem.Home ? "active" : null)">
+                    <a href="@Url.Action("Index", "Resources")">Home</a>
+                </li>
+                <li class="@(ViewBag.MenuItem == MenuItem.Memory ? "active" : null)">
+                    <a href="@Url.Action("Memory", "Resources")">Memory</a>
+                </li>
+                <li class="@(ViewBag.MenuItem == MenuItem.Hdd ? "active" : null)">
+                    <a href="@Url.Action("Hdd", "Resources")">HDD</a>
+                </li>
+            </ul>
+            <h3 class="text-muted">Load Monitoring</h3>
+            <br />
+        </div>
+        <div>
+            @RenderBody()
+        </div>
+    </div>
+
+</body>
+</html>

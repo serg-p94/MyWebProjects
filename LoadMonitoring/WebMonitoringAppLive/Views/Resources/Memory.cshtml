@@ -1,0 +1,22 @@
+﻿@model IEnumerable<BusinessLogic.MonitoringMemory.MemoryState>
+
+@{
+    Layout = "../Layout.cshtml";
+    ViewBag.Title = "Memory Statistics";
+    }
+
+<table class="table table-striped">
+    <tr class="text-center">
+        <td><b>Id</b></td>
+        <td><b>Date</b></td>
+        <td><b>Available Memory</b></td>
+    </tr>
+    @foreach (var ms in Model)
+    {
+        <tr class="text-center">
+            <td>@ms.Id</td>
+            <td>@ms.Date</td>
+            <td>@ms.AvailableMemoryMb</td>
+        </tr>
+    }
+</table>
