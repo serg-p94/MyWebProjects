@@ -1,4 +1,5 @@
-﻿using System.Web.Mvc;
+﻿using System.Security.Policy;
+using System.Web.Mvc;
 using System.Web.Routing;
 
 namespace WebMonitoringAppLive
@@ -14,6 +15,7 @@ namespace WebMonitoringAppLive
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "Resources", action = "Index", id = UrlParameter.Optional }
             );
+            //routes.MapRoute(name: "ODataRoute", url: "odata/");
         }
     }
 }

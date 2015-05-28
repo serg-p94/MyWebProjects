@@ -60,6 +60,12 @@
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>xcopy $(SolutionDir)DataLayer\bin\Debug\EntityFramework.SqlServer.dll $(TargetDir) /y
+xcopy $(SolutionDir)DataLayer\bin\Debug\EntityFramework.SqlServer.xml $(TargetDir) /y
+xcopy $(SolutionDir)DataLayer\bin\Debug\EntityFramework.dll $(TargetDir) /y
+xcopy $(SolutionDir)DataLayer\bin\Debug\EntityFramework.xml $(TargetDir) /y</PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

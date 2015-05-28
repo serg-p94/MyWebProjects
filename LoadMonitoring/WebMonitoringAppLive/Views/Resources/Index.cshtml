@@ -4,10 +4,32 @@
 }
 
 <div class="btn-group col-sm-offset-3">
-    <button class="btn btn-default" onclick="document.location.href='@Url.Action("Memory")'" style="height: 150px;width: 150px;background: rgb(189,221,244)">
+    <button class="btn btn-default"
+            onclick="document.location.href = '@Url.Action("Memory")'"
+            style="height: 150px; width: 150px; background: rgb(189, 221, 244)">
         Memory
     </button>
-    <button class="btn btn-default" onclick="document.location.href='@Url.Action("Hdd")'" style="height: 150px;width: 150px;background: rgb(193,240,209)">
+    <button class="btn btn-default" onclick=" document.location.href = '@Url.Action("Hdd")' " style="height: 150px; width: 150px; background: rgb(193, 240, 209)">
         HDD
     </button>
 </div>
+
+<div id="my-area" style="border: solid 1px red; width: 600px; height: 300px">
+</div>
+
+<script>
+    
+</script>
+
+<button class="btn btn-default" onclick=" AddCol('#my-area', 100) ">
+    Add
+</button>
+
+<button class="btn btn-default" onclick=" RemoveCol('#my-area') ">
+    Remove
+</button>
+
+<button class="btn btn-default" onclick="AddCol('#my-area', 100);RemoveCol('#my-area')">
+    Add-Remove
+</button>
+

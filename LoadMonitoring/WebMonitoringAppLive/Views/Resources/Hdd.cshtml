@@ -1,4 +1,4 @@
-﻿@model IEnumerable<BusinessLogic.MonitoringHdd.HddState>
+﻿@model IQueryable<BusinessLogic.MonitoringHdd.HddState>
 
 @{
     Layout = "../Layout.cshtml";
@@ -12,7 +12,7 @@
         <td><b>Drive Name</b></td>
         <td><b>Available Space</b></td>
     </tr>
-    @foreach (var hs in Model)
+    @foreach (var hs in Model.ToArray())
     {
         <tr class="text-center">
             <td>@hs.Id</td>

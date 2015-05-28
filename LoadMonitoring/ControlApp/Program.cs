@@ -12,12 +12,12 @@ namespace ControlApp
 
             Console.WriteLine("Starting monitoring...");
             mm.Start();
-            hm.Start();
+            //hm.Start();
 
             Thread.Sleep(10000);
 
             mm.Stop();
-            hm.Stop();
+            //hm.Stop();
         }
     }
 }
