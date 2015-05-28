@@ -7,12 +7,12 @@ namespace BusinessLogic.MonitoringHdd
     {
         public HddState()
         {
-            Date = DateTime.Now;
+            Date = DateTimeOffset.Now;
         }
 
         public int Id { get; set; }
         public virtual Drive Drive { get; set; }
-        public DateTime Date { get; set; }
+        public DateTimeOffset Date { get; set; }
         public long AvailableSpace { get; set; }
     }
 }

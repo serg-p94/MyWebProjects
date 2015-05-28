@@ -7,19 +7,7 @@
     ViewBag.Title = "Memory Statistics";
 }
 
-<div id="my-area" style="border: solid 1px red; width: 600px; height: 300px"></div>
-
-<button class="btn btn-default" onclick=" AddCol('#my-area', 100) ">
-    Add
-</button>
-
-<button class="btn btn-default" onclick=" RemoveCol('#my-area') ">
-    Remove
-</button>
-
-<button class="btn btn-default" onclick="AddCol('#my-area', 100);RemoveCol('#my-area')">
-    Add-Remove
-</button>
+<div id="memory-area" style="border: solid 1px red; width: 600px; height: 300px"></div>
 
 <script type="text/javascript">
     function GetMemoryStates(process, limit) {
@@ -37,5 +25,35 @@
         $.ajax(options);
     }
 
+    function AddState(state) {
+        var memArea = $('#memory-area');
+        var prevCol = memArea.children('.paint-col').last();
+        if (state.Id == prevCol.find('.id').html())
+        {
+            return;
+        }
 
+        var totalMemory = 4096;
+        var maxHeight = 300;
+        var nCols = $('#memory-area > div').length;
+        if (nCols >= 10)
+        {
+            RemoveCol('#memory-area');
+        }
+        AddCol('#memory-area', state.AvailableMemoryMb / totalMemory * maxHeight)
+            .append('<div class="id">' + state.Id + '</div>')
+            .append('<div class="available">' + state.AvailableMemoryMb + '</div>')
+    }
+
+    function AddFromDb() {
+        var options = {
+            success: function (data) {
+                AddState(data.value[0]);
+            },
+            url: "http://localhost:15103/odata/Memory?$orderby=Date desc&$top=1"
+        };
+        $.ajax(options);
+    }
+
+    setInterval(AddFromDb, 1000);
 </script>

@@ -14,7 +14,7 @@ namespace ControlApp
             mm.Start();
             //hm.Start();
 
-            Thread.Sleep(10000);
+            Thread.Sleep(20000);
 
             mm.Stop();
             //hm.Stop();

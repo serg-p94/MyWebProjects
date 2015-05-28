@@ -20,7 +20,7 @@ namespace BusinessLogic.MonitoringMemory
         protected override void DumpResourceInfo()
         {
             var memState = new MemoryState();
-            memState.Date = DateTime.Now;
+            memState.Date = DateTimeOffset.Now;
             memState.AvailableMemoryMb = (int) Pc.NextValue();
             _mid.WriteMemoryState(memState);
         }

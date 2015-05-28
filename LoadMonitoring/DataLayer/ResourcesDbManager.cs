@@ -28,7 +28,7 @@ namespace DataLayer
             }
         }
 
-        public IQueryable<MemoryState> LoadMemoryStatistics(DateTime startDate, DateTime endDate)
+        public IQueryable<MemoryState> LoadMemoryStatistics(DateTimeOffset startDate, DateTimeOffset endDate)
         {
             lock (_context)
             {
@@ -45,7 +45,7 @@ namespace DataLayer
             }
         }
 
-        public IQueryable<HddState> LoadHddStatistics(DateTime startDate, DateTime endDate)
+        public IQueryable<HddState> LoadHddStatistics(DateTimeOffset startDate, DateTimeOffset endDate)
         {
             lock (_context)
             {

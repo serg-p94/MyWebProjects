@@ -5,6 +5,6 @@ namespace BusinessLogic.MonitoringHdd.DAL_Interfaces
 {
     public interface IHddStatisticsLoader
     {
-        IQueryable<HddState> LoadHddStatistics(DateTime startDate, DateTime endDate);
+        IQueryable<HddState> LoadHddStatistics(DateTimeOffset startDate, DateTimeOffset endDate);
     }
 }

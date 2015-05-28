@@ -13,14 +13,14 @@ namespace BusinessLogic.MonitoringMemory
             _msl = msl;
         }
 
-        public IEnumerable<MemoryState> GetStatistics(DateTime startDate, DateTime endDate)
+        public IEnumerable<MemoryState> GetStatistics(DateTimeOffset startDate, DateTimeOffset endDate)
         {
             return _msl.LoadMemoryStatistics(startDate, endDate);
         }
 
         public void PrintAll()
         {
-            foreach (var ms in _msl.LoadMemoryStatistics(DateTime.MinValue, DateTime.MaxValue))
+            foreach (var ms in _msl.LoadMemoryStatistics(DateTimeOffset.MinValue, DateTimeOffset.MaxValue))
             {
                 Console.WriteLine("{0}: [{1}] - {2} Mb", ms.Id, ms.Date, ms.AvailableMemoryMb);
             }

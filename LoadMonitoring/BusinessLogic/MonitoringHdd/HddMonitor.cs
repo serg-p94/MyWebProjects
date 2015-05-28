@@ -29,7 +29,7 @@ namespace BusinessLogic.MonitoringHdd
                     var state = new HddState()
                     {
                         Drive = drive,
-                        Date = DateTime.Now,
+                        Date = DateTimeOffset.Now,
                         AvailableSpace = di.AvailableFreeSpace
                     };
                     _hddStateWriter.WriteHddState(state);

@@ -18,7 +18,7 @@ namespace WebMonitoringAppLive.Controllers.Odata
         [EnableQuery]
         public IQueryable<HddState> Get()
         {
-            return _loader.LoadHddStatistics(DateTime.MinValue, DateTime.MaxValue);
+            return _loader.LoadHddStatistics(DateTimeOffset.MinValue, DateTimeOffset.MaxValue);
         }
     }
 }

@@ -18,7 +18,7 @@ namespace WebMonitoringAppLive.Controllers.Odata
         [EnableQuery]
         public IQueryable<MemoryState> Get()
         {
-            return _msl.LoadMemoryStatistics(DateTime.MinValue, DateTime.MaxValue);
+            return _msl.LoadMemoryStatistics(DateTimeOffset.MinValue, DateTimeOffset.MaxValue);
         }
     }
 }

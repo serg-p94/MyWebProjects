@@ -20,7 +20,7 @@ namespace WebMonitoringAppLive.Controllers
             ViewBag.MenuItem = MenuItem.Memory;
             return
                 View(Bootstrapper.Bootstrapper.GetMemoryStatisticsLoader()
-                    .LoadMemoryStatistics(DateTime.MinValue, DateTime.MaxValue));
+                    .LoadMemoryStatistics(DateTimeOffset.MinValue, DateTimeOffset.MaxValue));
         }
 
         public ActionResult Hdd()
@@ -28,7 +28,7 @@ namespace WebMonitoringAppLive.Controllers
             ViewBag.MenuItem = MenuItem.Hdd;
             return
                 View(Bootstrapper.Bootstrapper.GetHddStatisticsLoader()
-                    .LoadHddStatistics(DateTime.MinValue, DateTime.MaxValue));
+                    .LoadHddStatistics(DateTimeOffset.MinValue, DateTimeOffset.MaxValue));
         }
 
     }

@@ -5,6 +5,6 @@ namespace BusinessLogic.MonitoringMemory.DAL_Interfaces
 {
     public interface IMemoryStatisticsLoader
     {
-        IQueryable<MemoryState> LoadMemoryStatistics(DateTime startDate, DateTime endDate);
+        IQueryable<MemoryState> LoadMemoryStatistics(DateTimeOffset startDate, DateTimeOffset endDate);
     }
 }
