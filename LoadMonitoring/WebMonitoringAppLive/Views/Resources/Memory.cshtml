@@ -1,0 +1,40 @@
+﻿@using System.Net.Http
+@using System.Security.Policy
+@model IQueryable<BusinessLogic.MonitoringMemory.MemoryState>
+
+@{
+    Layout = "../Layout.cshtml";
+    ViewBag.Title = "Memory Statistics";
+}
+
+<div class="paint-area draggable"></div>
+<div style="clear: both;"></div>
+
+<button id="btn-paint" class="btn btn-primary">Draw</button>
+
+<script type="text/javascript">
+    
+    function GetMemoryStates(process, limit) {
+        var options = {
+            success: function(data) {
+                process(data.value);
+            }
+        };
+        if (typeof limit == "undefined") {
+            options.url = "http://localhost:15103/odata/Memory";
+        } else {
+            options.url = "http://localhost:15103/odata/Memory?$orderby=Date&$top=" + limit;
+        }
+
+        $.ajax(options);
+    }
+
+    $("#btn-paint").click(
+        setInterval(function () {
+            Clear($(".paint-area"));
+            GetMemoryStates(function(data) {
+                Redraw($(".paint-area"), data);
+            }, 10);
+        }, 1000)
+    );
+</script>
