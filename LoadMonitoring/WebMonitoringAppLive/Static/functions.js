@@ -9,7 +9,7 @@ function AddCol(dst, h) {
     col.css('width', '0');
     col.css('height', h);
     col.css('margin-top', areaHeight - h - 2);
-    col.animate({ width: 99 });
+    col.animate({ "width": "9.95%" });
     $(dst).append(col);
 }
 

@@ -7,13 +7,21 @@
     ViewBag.Title = "Memory Statistics";
 }
 
-<div class="paint-area draggable"></div>
-<div style="clear: both;"></div>
+<div id="my-area" style="border: solid 1px red; width: 600px; height: 300px"></div>
 
-<button id="btn-paint" class="btn btn-primary">Draw</button>
+<button class="btn btn-default" onclick=" AddCol('#my-area', 100) ">
+    Add
+</button>
+
+<button class="btn btn-default" onclick=" RemoveCol('#my-area') ">
+    Remove
+</button>
+
+<button class="btn btn-default" onclick="AddCol('#my-area', 100);RemoveCol('#my-area')">
+    Add-Remove
+</button>
 
 <script type="text/javascript">
-    
     function GetMemoryStates(process, limit) {
         var options = {
             success: function(data) {
@@ -29,12 +37,5 @@
         $.ajax(options);
     }
 
-    $("#btn-paint").click(
-        setInterval(function () {
-            Clear($(".paint-area"));
-            GetMemoryStates(function(data) {
-                Redraw($(".paint-area"), data);
-            }, 10);
-        }, 1000)
-    );
+
 </script>
