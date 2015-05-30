@@ -1,5 +1,6 @@
 ﻿function Clear(dest) {
-    dest.children("div").remove();
+    var n = $(dest).children("div").length;
+    RemoveCol(dest, n);
 }
 
 function AddCol(dst, h, w) {
@@ -15,10 +16,9 @@ function AddCol(dst, h, w) {
     return col;
 }
 
-function RemoveCol(dst, n, callback) {
+function RemoveCol(dst, n) {
     var cols = $(dst).find('.paint-col').slice(0, n);
     cols.animate({ width: 0 }, function () {
         cols.remove();
-        callback();
     });
 }

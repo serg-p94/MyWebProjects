@@ -19,32 +19,32 @@
             new SelectListItem(){Text="50"}
            }, new { @class = "form-control" }
         )
-            <button class="btn btn-default" onclick="painterMemory.lastPaintedId = 0; setInterval(AddFromDb, painterMemory.period);">Start</button>
+            <button class="btn btn-default" onclick="Start();">Start</button>
         </div>
         <div id="memory-area" class="paint-area"></div>
     </div>
 </div>
 
 <script type="text/javascript">
-    var combo = $('#columnsNumber')[0];
-    function UpdateColumnsWidth() {
 
-    }
-    function SetColumnsWidth(w) {
-        $(painterMemory.area).children('.paint-col').css('width', w + '%');
-    }
-    combo.onchange = function () {
+    function Start() {
+        Clear("#memory-area");
+        var combo = $('#columnsNumber')[0];
+
+        if (typeof (painterMemory) != "undefined") {
+            clearInterval(painterMemory.interval);
+        }
+
+        painterMemory = { area: "#memory-area" };
+        painterMemory.totalMemory = 4096;
         painterMemory.columnsNumber = combo.value;
-        SetColumnsWidth(99.5 / painterMemory.columnsNumber);
-    };
-
-    painterMemory = { area: "#memory-area" };
-    painterMemory.totalMemory = 4096;
-    painterMemory.columnsNumber = combo.value;
-    painterMemory.maxHeight = 300;
-    painterMemory.period = 1000;
-    painterMemory.lastPaintedId = 0;
-    painterMemory.animationTime = 500;
+        painterMemory.maxHeight = 300;
+        painterMemory.period = 1000;
+        painterMemory.lastPaintedId = 0;
+        painterMemory.animationTime = 500;
+        painterMemory.interval = setInterval(AddFromDb, painterMemory.period);
+    }
+    
 
     function AddState(state) {
         var nCols = $(painterMemory.area).children('div').length;
