@@ -7,53 +7,74 @@
     ViewBag.Title = "Memory Statistics";
 }
 
-<div id="memory-area" style="border: solid 1px red; width: 600px; height: 300px"></div>
+<div class="ui-widget draggable paint-area-widget">
+    <div class="ui-widget-header text-center">Memory Statistics</div>
+    <div class="ui-widget-content">
+        <div class="form-group form-inline">
+            @Html.DropDownList("columnsNumber",
+           new[] {
+            new SelectListItem(){Text="5"},
+            new SelectListItem(){Text="10"},
+            new SelectListItem(){Text="20"},
+            new SelectListItem(){Text="50"}
+           }, new { @class = "form-control" }
+        )
+            <button class="btn btn-default" onclick="painterMemory.lastPaintedId = 0; setInterval(AddFromDb, painterMemory.period);">Start</button>
+        </div>
+        <div id="memory-area" class="paint-area"></div>
+    </div>
+</div>
 
 <script type="text/javascript">
-    function GetMemoryStates(process, limit) {
-        var options = {
-            success: function(data) {
-                process(data.value);
-            }
-        };
-        if (typeof limit == "undefined") {
-            options.url = "http://localhost:15103/odata/Memory";
-        } else {
-            options.url = "http://localhost:15103/odata/Memory?$orderby=Date&$top=" + limit;
-        }
+    var combo = $('#columnsNumber')[0];
+    function UpdateColumnsWidth() {
 
-        $.ajax(options);
     }
+    function SetColumnsWidth(w) {
+        $(painterMemory.area).children('.paint-col').css('width', w + '%');
+    }
+    combo.onchange = function () {
+        painterMemory.columnsNumber = combo.value;
+        SetColumnsWidth(99.5 / painterMemory.columnsNumber);
+    };
+
+    painterMemory = { area: "#memory-area" };
+    painterMemory.totalMemory = 4096;
+    painterMemory.columnsNumber = combo.value;
+    painterMemory.maxHeight = 300;
+    painterMemory.period = 1000;
+    painterMemory.lastPaintedId = 0;
+    painterMemory.animationTime = 500;
 
     function AddState(state) {
-        var memArea = $('#memory-area');
-        var prevCol = memArea.children('.paint-col').last();
-        if (state.Id == prevCol.find('.id').html())
-        {
+        var nCols = $(painterMemory.area).children('div').length;
+        if (typeof (state) == "undefined" || state.Id == painterMemory.lastPaintedId) {
             return;
         }
-
-        var totalMemory = 4096;
-        var maxHeight = 300;
-        var nCols = $('#memory-area > div').length;
-        if (nCols >= 10)
+        
+        if (nCols >= painterMemory.columnsNumber)
         {
-            RemoveCol('#memory-area');
+            RemoveCol(painterMemory.area, nCols - painterMemory.columnsNumber + 1);
         }
-        AddCol('#memory-area', state.AvailableMemoryMb / totalMemory * maxHeight)
-            .append('<div class="id">' + state.Id + '</div>')
-            .append('<div class="available">' + state.AvailableMemoryMb + '</div>')
+
+        AddCol(painterMemory.area,
+            state.AvailableMemoryMb / painterMemory.totalMemory * painterMemory.maxHeight,
+            99.5 / painterMemory.columnsNumber)
+                .append('<div class="id">' + state.Id + '</div>')
+                .append('<div class="available">' + state.AvailableMemoryMb + '</div>');
+        painterMemory.lastPaintedId = state.Id;
     }
 
     function AddFromDb() {
+        var colsAdded = $('#memory-area > div').length;
+        var limit = 1;
         var options = {
             success: function (data) {
-                AddState(data.value[0]);
+                data.value.forEach(AddState);
             },
-            url: "http://localhost:15103/odata/Memory?$orderby=Date desc&$top=1"
+            url: "http://localhost:15103/odata/Memory?$orderby=Date&$top=" + limit
+                + "&$filter=Id gt " + painterMemory.lastPaintedId
         };
         $.ajax(options);
     }
-
-    setInterval(AddFromDb, 1000);
 </script>
