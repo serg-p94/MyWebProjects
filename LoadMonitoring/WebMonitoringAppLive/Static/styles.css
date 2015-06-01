@@ -8,6 +8,10 @@
     height: 300px;
 }
 
-.paint-area-widget {
+.paint-widget {
     width: 600px;
+}
+
+.draggable {
+    cursor: move;
 }

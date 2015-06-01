@@ -1,80 +1,67 @@
-﻿@using System.Net.Http
-@using System.Security.Policy
-@model IQueryable<BusinessLogic.MonitoringMemory.MemoryState>
-
-@{
+﻿@{
     Layout = "../Layout.cshtml";
     ViewBag.Title = "Memory Statistics";
 }
 
-<div class="ui-widget draggable paint-area-widget">
-    <div class="ui-widget-header text-center">Memory Statistics</div>
+<div class="ui-widget paint-widget draggable">
+    <div class="ui-widget-header"><h4>Memory Statistics</h4></div>
+
     <div class="ui-widget-content">
         <div class="form-group form-inline">
-            @Html.DropDownList("columnsNumber",
-           new[] {
-            new SelectListItem(){Text="5"},
-            new SelectListItem(){Text="10"},
-            new SelectListItem(){Text="20"},
-            new SelectListItem(){Text="50"}
-           }, new { @class = "form-control" }
-        )
-            <button class="btn btn-default" onclick="Start();">Start</button>
-        </div>
-        <div id="memory-area" class="paint-area"></div>
-    </div>
+            @Html.DropDownList("columnsNumber", new[]
+            {
+                new SelectListItem{Text="5"},
+                new SelectListItem{Text="10"},
+                new SelectListItem{Text="20"}
+            }, new { @class="form-control"})
+    <button class="btn btn-default" onclick="Start();">Start</button>
+</div>
+<div id="memory-area" class="paint-area"></div>
+</div>
 </div>
 
 <script type="text/javascript">
+    painter = {};
+    painter.maxValue = 4096;
+    painter.area = $('#memory-area');
+    painter.maxHeight = 300;
+    painter.period = 1000;
 
     function Start() {
-        Clear("#memory-area");
-        var combo = $('#columnsNumber')[0];
-
-        if (typeof (painterMemory) != "undefined") {
-            clearInterval(painterMemory.interval);
+        Clear(painter.area);
+        if (typeof(painter.interval) != "undefined") {
+            clearInterval(painter.interval);
         }
 
-        painterMemory = { area: "#memory-area" };
-        painterMemory.totalMemory = 4096;
-        painterMemory.columnsNumber = combo.value;
-        painterMemory.maxHeight = 300;
-        painterMemory.period = 1000;
-        painterMemory.lastPaintedId = 0;
-        painterMemory.animationTime = 500;
-        painterMemory.interval = setInterval(AddFromDb, painterMemory.period);
+        painter.columnsNumber = $('#columnsNumber').val();
+        painter.interval = setInterval(AddFromDb, painter.period);
+        painter.lastPaintedId = 0;
     }
-    
 
     function AddState(state) {
-        var nCols = $(painterMemory.area).children('div').length;
-        if (typeof (state) == "undefined" || state.Id == painterMemory.lastPaintedId) {
+        var prevCol = painter.area.children('.paint-col').last();
+        if (typeof (state) == "undefined" || state.Id == prevCol.find('.id').html()) {
             return;
         }
-        
-        if (nCols >= painterMemory.columnsNumber)
-        {
-            RemoveCol(painterMemory.area, nCols - painterMemory.columnsNumber + 1);
-        }
 
-        AddCol(painterMemory.area,
-            state.AvailableMemoryMb / painterMemory.totalMemory * painterMemory.maxHeight,
-            99.5 / painterMemory.columnsNumber)
-                .append('<div class="id">' + state.Id + '</div>')
-                .append('<div class="available">' + state.AvailableMemoryMb + '</div>');
-        painterMemory.lastPaintedId = state.Id;
+        var nCols = painter.area.children('div').length;
+        if (nCols >= painter.columnsNumber) {
+            RemoveCol(painter.area);
+        }
+        AddCol(painter.area, state.AvailableMemoryMb / painter.maxValue * painter.maxHeight, 99 / painter.columnsNumber)
+            .append('<div class="id">' + state.Id + '</div>')
+            .append('<div class="available">' + state.AvailableMemoryMb + '</div>');
+        painter.lastPaintedId = state.Id;
     }
 
     function AddFromDb() {
-        var colsAdded = $('#memory-area > div').length;
-        var limit = 1;
         var options = {
             success: function (data) {
-                data.value.forEach(AddState);
+                AddState(data.value[0]);
             },
-            url: "http://localhost:15103/odata/Memory?$orderby=Date&$top=" + limit
-                + "&$filter=Id gt " + painterMemory.lastPaintedId
+            url: "http://localhost:15103/odata/Memory?$top=1&$filter=Id gt " + painter.lastPaintedId
         };
         $.ajax(options);
     }
+
 </script>
