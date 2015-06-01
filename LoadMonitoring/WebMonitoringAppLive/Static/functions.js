@@ -1,5 +1,10 @@
 ﻿function Clear(dest) {
-    dest.children("div").remove();
+    var columns = dest.children(".paint-col");
+    columns.fadeOut({
+        complete: function () {
+            columns.remove();
+        }
+    });
 }
 
 function AddCol(dst, h, w) {
