@@ -15,3 +15,7 @@
 .draggable {
     cursor: move;
 }
+
+.drives-widget {
+    width: 600px;
+}

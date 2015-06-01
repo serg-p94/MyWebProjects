@@ -1,24 +1,49 @@
-﻿@model IQueryable<BusinessLogic.MonitoringHdd.HddState>
-
-@{
+﻿@{
     Layout = "../Layout.cshtml";
     ViewBag.Title = "HDD Statistics";
 }
 
-<table class="table table-striped">
-    <tr class="text-center">
-        <td><b>Id</b></td>
-        <td><b>Date</b></td>
-        <td><b>Drive Name</b></td>
-        <td><b>Available Space</b></td>
-    </tr>
-    @foreach (var hs in Model.ToArray())
-    {
-        <tr class="text-center">
-            <td>@hs.Id</td>
-            <td>@hs.Date</td>
-            <td>@hs.Drive.Name</td>
-            <td>@hs.AvailableSpace</td>
-        </tr>
+<script>
+    var maxHeight = 300;
+    var columnsNumber = 10;
+    var maxValue = 1000000000000;
+    var lastShownId = 0;
+
+    function ReadDrives() {
+        $('#table-drives').children().remove();
+        var options = {
+            url: "http://localhost:15103/odata/Drive",
+            success: function (data) {
+                var arr = data.value;
+                arr.forEach(function (dr) {
+                    $('#drives-select').append('<option>' + dr.Name + '</option>');
+                });
+            }
+        };
+        $.ajax(options);
     }
-</table>
+
+    function ShowDriveUsage(id) {
+        var area = $('#drives-area');
+        var options = {
+            
+        };
+    }
+
+    function AppendState(dst, state) {
+        AddCol(dst, state.AvailableSpace * maxHeight / maxValue, 99 / columnsNumber);
+    }
+</script>
+
+<div class="ui-widget drives-widget draggable">
+    <div class="ui-widget-header">
+        <h4 class="text-center"><b>Drives</b></h4>
+    </div>
+    <div class="ui-widget-content">
+        <div class="form-group form-inline">
+            <select id="drives-select" class="form-control"></select>
+            <button class="btn btn-default" onclick="ReadDrives();">Refresh</button>
+        </div>
+        <div id="drives-area" class="paint-area"></div>
+    </div>
+</div>

@@ -11,13 +11,13 @@ namespace ControlApp
             var hm = Bootstrapper.Bootstrapper.GetHddMonitor();
 
             Console.WriteLine("Starting monitoring...");
-            mm.Start();
-            //hm.Start();
+            //mm.Start();
+            hm.Start();
 
             Thread.Sleep(20000);
 
-            mm.Stop();
-            //hm.Stop();
+            //mm.Stop();
+            hm.Stop();
         }
     }
 }
