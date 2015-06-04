@@ -4,34 +4,58 @@
 }
 
 <script>
+    painter = { maxHeight: 300, columnsNumber: 10, lastShownId: 0, maxValue: 100000000 };
     var maxHeight = 300;
     var columnsNumber = 10;
     var maxValue = 1000000000000;
     var lastShownId = 0;
+    var interval;
 
     function ReadDrives() {
-        $('#table-drives').children().remove();
+        $('#drives-select').children().remove();
         var options = {
             url: "http://localhost:15103/odata/Drive",
             success: function (data) {
                 var arr = data.value;
                 arr.forEach(function (dr) {
                     $('#drives-select').append('<option>' + dr.Name + '</option>');
+                    painter.drives[dr.Name] = dr;
                 });
+            }
+        };
+        painter.drives = {};
+        $.ajax(options);
+    }
+
+    function Start() {
+        if (typeof (painter.interval) != "undefined") {
+            clearInterval(painter.interval);
+        }
+        Clear($('#drives-area'));
+        painter.lastShownId = 0;
+
+        var name = $('#drives-select').val();
+        setInterval(function () { ShowNext(painter.drives[name].Id); });
+    }
+
+    function ShowNext(id) {
+        var options = {
+            url: "http://localhost:15103/odata/Hdd?$expand=Drive&$filter=Drive/Id eq " + id + " and Id gt " + painter.lastShownId + " &$top=1",
+            success: function (data) {
+                var state = data.value[0];
+                AddState(state);
             }
         };
         $.ajax(options);
     }
 
-    function ShowDriveUsage(id) {
-        var area = $('#drives-area');
-        var options = {
-            
-        };
-    }
-
-    function AppendState(dst, state) {
-        AddCol(dst, state.AvailableSpace * maxHeight / maxValue, 99 / columnsNumber);
+    function AddState(state) {
+        var dst = $('#drives-area');
+        var nCols = dst.children('.paint-col').length;
+        if (nCols >= painter.columnsNumber) {
+            RemoveCol(dst);
+        }
+        AddCol(dst, state.AvailableSpace / painter.maxValue * painter.maxHeight, 99 / painter.columnsNumber);
     }
 </script>
 
@@ -43,6 +67,7 @@
         <div class="form-group form-inline">
             <select id="drives-select" class="form-control"></select>
             <button class="btn btn-default" onclick="ReadDrives();">Refresh</button>
+            <button class="btn btn-default" onclick="ShowNext(painter.drives[$('#drives-select').val()].Id);">Start</button>
         </div>
         <div id="drives-area" class="paint-area"></div>
     </div>
