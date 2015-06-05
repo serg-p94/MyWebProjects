@@ -4,20 +4,20 @@
 }
 
 <div class="ui-widget paint-widget draggable">
-    <div class="ui-widget-header"><h4>Memory Statistics</h4></div>
+    <div class="ui-widget-header"><h4 class="text-center">Memory Statistics</h4></div>
 
     <div class="ui-widget-content">
         <div class="form-group form-inline">
             @Html.DropDownList("columnsNumber", new[]
             {
-                new SelectListItem{Text="5"},
-                new SelectListItem{Text="10"},
-                new SelectListItem{Text="20"}
-            }, new { @class="form-control"})
-    <button class="btn btn-default" onclick="Start();">Start</button>
-</div>
-<div id="memory-area" class="paint-area"></div>
-</div>
+                new SelectListItem {Text = "5"},
+                new SelectListItem {Text = "10"},
+                new SelectListItem {Text = "20"}
+            }, new {@class = "form-control"})
+            <button class="btn btn-default" onclick="Start();">Start</button>
+        </div>
+        <div id="memory-area" class="paint-area"></div>
+    </div>
 </div>
 
 <script type="text/javascript">

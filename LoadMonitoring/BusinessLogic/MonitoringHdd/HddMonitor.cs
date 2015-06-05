@@ -24,7 +24,7 @@ namespace BusinessLogic.MonitoringHdd
                     var drive = _hddDriveLoader.GetDrive(di.Name);
                     if (drive == null)
                     {
-                        drive = new Drive() {Name = di.Name};
+                        drive = new Drive() { Name = di.Name, Size = di.TotalSize };
                     }
                     var state = new HddState()
                     {

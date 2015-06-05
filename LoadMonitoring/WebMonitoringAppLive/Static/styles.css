@@ -1,10 +1,12 @@
 ﻿.paint-col {
     border: solid 1px green;
+    background-color: greenyellow;
     float: left;
 }
 
 .paint-area {
-    border: solid 1px red;
+    border: solid 1px coral;
+    background-color: azure;
     height: 300px;
 }
 

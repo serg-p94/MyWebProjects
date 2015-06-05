@@ -4,12 +4,9 @@
 }
 
 <script>
-    painter = { maxHeight: 300, columnsNumber: 10, lastShownId: 0, maxValue: 100000000 };
-    var maxHeight = 300;
-    var columnsNumber = 10;
-    var maxValue = 1000000000000;
-    var lastShownId = 0;
-    var interval;
+    painter = { maxHeight: 300, columnsNumber: 10, lastShownId: 0, period: 1000 };
+
+    $(ReadDrives);
 
     function ReadDrives() {
         $('#drives-select').children().remove();
@@ -33,9 +30,10 @@
         }
         Clear($('#drives-area'));
         painter.lastShownId = 0;
+        painter.columnsNumber = $('#columns-number').val();
 
         var name = $('#drives-select').val();
-        setInterval(function () { ShowNext(painter.drives[name].Id); });
+        painter.interval = setInterval(function () { ShowNext(painter.drives[name].Id); }, painter.period);
     }
 
     function ShowNext(id) {
@@ -43,7 +41,9 @@
             url: "http://localhost:15103/odata/Hdd?$expand=Drive&$filter=Drive/Id eq " + id + " and Id gt " + painter.lastShownId + " &$top=1",
             success: function (data) {
                 var state = data.value[0];
-                AddState(state);
+                if (typeof (state) != "undefined") {
+                    AddState(state);
+                }
             }
         };
         $.ajax(options);
@@ -55,7 +55,9 @@
         if (nCols >= painter.columnsNumber) {
             RemoveCol(dst);
         }
-        AddCol(dst, state.AvailableSpace / painter.maxValue * painter.maxHeight, 99 / painter.columnsNumber);
+        AddCol(dst, state.AvailableSpace / state.Drive.Size * painter.maxHeight, 99 / painter.columnsNumber)
+            .append(state.Id + '<br/>').append((state.AvailableSpace / state.Drive.Size * 100).toFixed(1)+'%');
+        painter.lastShownId = state.Id;
     }
 </script>
 
@@ -66,8 +68,12 @@
     <div class="ui-widget-content">
         <div class="form-group form-inline">
             <select id="drives-select" class="form-control"></select>
-            <button class="btn btn-default" onclick="ReadDrives();">Refresh</button>
-            <button class="btn btn-default" onclick="ShowNext(painter.drives[$('#drives-select').val()].Id);">Start</button>
+            <select id="columns-number" class="form-control">
+                <option>5</option>
+                <option>10</option>
+                <option>20</option>
+            </select>
+            <button class="btn btn-default" onclick="Start();">Start</button>
         </div>
         <div id="drives-area" class="paint-area"></div>
     </div>

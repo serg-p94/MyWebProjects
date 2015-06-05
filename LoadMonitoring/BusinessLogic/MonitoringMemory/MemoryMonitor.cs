@@ -11,8 +11,6 @@ namespace BusinessLogic.MonitoringMemory
 
         public MemoryMonitor(IMemoryStateWriter mid)
         {
-            Console.WriteLine("MemoryMonitor()");
-
             _mid = mid;
             Pc = new PerformanceCounter("Memory", "Available MBytes");
         }
