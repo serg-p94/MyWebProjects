@@ -1,0 +1,13 @@
+﻿@using MvcCalculator.Helper
+@model MvcCalculator.Models.HomeCalculateViewModel
+
+@{
+    Layout = "~/Views/Shared/_Main.cshtml";
+    ViewBag.Title = "Result";
+}
+
+<h2>Result</h2>
+
+@Model.v1 <text>@Translator.OperationToString(Model.operation)</text> @Model.v2 = @Model.GetResult()
+<br/>
+<button type="button" class="btn btn-default" onclick="document.location.href='@Url.Action("Index", new {ignoreCookies = true})'">Again</button>

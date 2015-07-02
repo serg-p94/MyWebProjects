@@ -1,0 +1,58 @@
+﻿@using MvcCalculator.Models;
+@using MvcCalculator.Helper;
+
+@model MvcCalculator.Models.LogInViewModel
+@{
+    Layout = "~/Views/Shared/_Main.cshtml";
+    ViewBag.Title = "Log In";
+}
+
+<h2>Log In</h2>
+
+@if (Model.Result == UserValidationResult.Success)
+{
+    <h3 class="bg-success">Logged In!</h3>
+}
+else
+{
+    switch (Model.Result)
+    {
+        case UserValidationResult.UserNotFound:
+            <h3 class="col-xs-offset-2" style="color: brown">User not found!</h3>
+            break;
+        case UserValidationResult.WrongPassword:
+            <h3 class="col-xs-offset-2" style="color: brown">Wrong Password!</h3>
+            break;
+    }
+    using (Html.BeginForm("LogIn", "User", FormMethod.Post, new { @class = "form-horizontal", @role = "form" }))
+    {
+        <div class="form-group">
+            <label class="col-sm-2 control-label">Login</label>
+            <div class="col-sm-10">
+                @Html.TextBox("name", null, new { @class = "form-control", placeholder = "Login", required = "" })
+            </div>
+        </div>
+    
+        <div class="form-group">
+            <label class="col-sm-2 control-label">Password</label>
+            <div class="col-sm-10">
+                @Html.Password("password", Model.Password, new{@class="form-control", @placeholder="Password"})
+            </div>
+        </div>
+    
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" name="remember"/> Remember me
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-offset-2 btn-group">
+            <button type="submit" class="btn btn-default">Log In</button>
+            <button type="button" class="btn btn-default" onclick="document.location.href='@Url.Action("Registration", "User")'">Registration</button>
+            <button type="button" class="btn btn-default" onclick="document.location.href = '@Url.Action("PasswordRecovery", "User")'">Recover Password</button>
+        </div>
+    }
+}

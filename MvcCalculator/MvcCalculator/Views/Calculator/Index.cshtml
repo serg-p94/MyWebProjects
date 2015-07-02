@@ -1,0 +1,26 @@
+﻿@using MvcCalculator.Helper
+
+@{
+    Layout = "~/Views/Shared/_Main.cshtml";
+    ViewBag.Title = "Index";
+}
+<h2>Input</h2>
+
+@using (Html.BeginForm("Calculate", "Calculator", FormMethod.Post, new { @class = "form-inline" }))
+{
+    <div class="form-group">
+        @Html.TextBox("v1", null, new { placeholder = "Value 1", @class = "form-control" })
+    </div>
+    <div class="form-group">
+        @Html.DropDownList("operation",
+        new[] {
+            new SelectListItem(){Text="+", Value=Operation.Plus.ToString()},
+            new SelectListItem(){Text="-", Value=Operation.Minus.ToString()},
+            new SelectListItem(){Text="*", Value=Operation.Mult.ToString()},
+            new SelectListItem(){Text="/", Value=Operation.Div.ToString()}
+        }, new { @class = "form-control" }
+        )
+        @Html.TextBox("v2", null, new { placeholder = "Value 2", @class = "form-control" })
+    </div>
+    <button type="submit" class="btn btn-default">Calculate</button>
+}

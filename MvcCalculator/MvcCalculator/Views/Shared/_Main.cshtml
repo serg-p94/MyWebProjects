@@ -1,0 +1,109 @@
+﻿@using MvcCalculator.Helper
+@{
+    ViewBag.MainMenu = ViewBag.MainMenu is MainMenuItems ? ViewBag.MainMenu : MainMenuItems.None;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta  charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>@ViewBag.Title</title>
+    
+    <link href="~/Static/jquery-ui-1.11.2.custom/jquery-ui.css" rel="stylesheet">
+    <link href="~/Static/bootstrap-3.2.0-dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="~/Static/bootstrap-3.2.0-dist/css/bootstrap-theme.min.css" rel="stylesheet">
+    <link href="~/Static/bootstrap-3.2.0-dist/css/datepicker.css" rel="stylesheet">
+    <link href="~/Static/MyStyles.css" rel="stylesheet">
+
+    <script type="text/javascript" src="~/Static/scripts/jquery-2.1.1.min.js"></script>
+    <script type="text/javascript" src="~/Static/jquery-ui-1.11.2.custom/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="~/Static/bootstrap-3.2.0-dist/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="~/Static/bootstrap-3.2.0-dist/js/bootstrap-datepicker.js"></script>
+    <script type="text/javascript" src="~/Static/scripts/MyScripts.js"></script>
+    
+    <script type="text/javascript">
+        $(function () {
+            var checkout = $('.datepicker').datepicker({ viewMode: 'years', format: 'dd.mm.yyyy' })
+                .on('changeDate', function (ev) {
+                    if (ev.viewMode == 'days') {
+                        checkout.datepicker('hide');
+                    }
+                });
+            $('.ui-droppable').droppable(
+                {
+                    drop: function (event, ui) {
+                        var str = $(this).val();
+                        if (str != "")
+                            str += "\n";
+                        $(this).val(str + ui.draggable.find('label').text());
+                        ui.draggable.remove();
+                    }
+                }
+            );
+            $(".ui-sortable").sortable({ connectWith: ".list-droppable" });
+            $(".ui-sortable").disableSelection();
+        });
+    </script>
+</head>
+    <body>
+        <div class="container">
+            <div class="header">
+                <ul class="nav nav-tabs pull-right">
+                    <li class="@Html.Raw(ViewBag.MainMenu == MainMenuItems.Home ? "active" : string.Empty)">
+                        @Html.ActionLink("Home", "Index", "Home")
+                    </li>
+
+                    <li class="dropdown @(ViewBag.MainMenu == MainMenuItems.Calculator ? "active" : string.Empty)">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                            Calculator<b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>@Html.ActionLink("Calculator", "Index", "Calculator")</li>
+                            <li>@Html.ActionLink("History", "History", "Calculator")</li>
+                        </ul>
+                    </li>
+                    
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <li class="@Html.Raw(ViewBag.MainMenu == MainMenuItems.Movies ? "active" : string.Empty)">
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                Movies<b class="caret"></b>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li>@Html.ActionLink("Show All", "Show", "Movie")</li>
+                                <li>@Html.ActionLink("Add Movie", "Add", "Movie")</li>
+                            </ul>
+                        </li>
+                    }
+
+                    <li class="dropdown @(ViewBag.MainMenu == MainMenuItems.User ? "active" : string.Empty)">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                            @Html.Raw(User.Identity.IsAuthenticated ? User.Identity.Name : "User")
+                            <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            @if (!User.Identity.IsAuthenticated)
+                            {
+                                <li>@Html.ActionLink("Registration", "Registration", "User")</li>
+                                <li>@Html.ActionLink("Log In", "LogIn", "User")</li>
+                                <li>@Html.ActionLink("Recover Account", "PasswordRecovery", "User")</li>
+                            }
+                            else
+                            {
+                                <li>@Html.ActionLink("Details", "UserInfo", "User")</li>
+                                <li>@Html.ActionLink("All Users", "ShowAll", "User")</li>
+                                <li>@Html.ActionLink("Log Out", "LogOut", "User")</li>
+                            }
+                        </ul>
+                    </li>
+                </ul>
+                <h3 class="text-muted">By Sergei Puzyrnyi</h3>
+            </div>
+            <div>
+                @RenderBody()
+            </div>
+        </div>
+    </body>
+</html>

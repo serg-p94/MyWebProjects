@@ -1,0 +1,15 @@
+.list-droppable {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    float: left;
+    margin-right: 10px;
+    background: aquamarine;
+    padding: 3px;
+    width: 100%;
+}
+
+.scroll-area {
+    height: 215px;
+    overflow: auto;
+}

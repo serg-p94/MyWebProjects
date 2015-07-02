@@ -1,0 +1,29 @@
+﻿@model MvcCalculator.Helper.User.PersonalInformation
+
+@{
+    Layout = "~/Views/Shared/_Main.cshtml";
+    ViewBag.Title = "User Information";
+}
+
+
+<h2>
+    @Model.Name
+    @if (User.Identity.Name == Model.Name)
+    {
+        <button class="btn btn-danger" onclick="document.location.href = '@Url.Action("DeleteCurrentUser")'">Delete</button>
+    }
+</h2>
+<table class="table table-stripped">
+    <tr>
+        <td>E-mail</td>
+        <td>@Model.Email</td>
+    </tr>
+    <tr>
+        <td>Age</td>
+        @{var age = Model.GetAge();}
+          @if (age.HasValue)
+          {
+              <td>@Model.GetAge().Value.Year</td>
+          }
+    </tr>
+</table>

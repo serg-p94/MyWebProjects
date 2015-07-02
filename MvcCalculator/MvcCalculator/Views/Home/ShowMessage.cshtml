@@ -1,0 +1,23 @@
+﻿@using MvcCalculator.Models
+@model MvcCalculator.Models.Message
+
+@{
+    Layout = "~/Views/Shared/_Main.cshtml";
+    ViewBag.Title = Model.Header;
+}
+
+<h2>@Model.Header</h2>
+<br />
+
+@switch (Model.Type)
+{
+    case Message.MessageType.Success:
+        <h4 class="alert alert-success text-center col-xs-offset-2 col-xs-8">@Model.Body</h4>
+        break;
+    case Message.MessageType.Error:
+        <h4 class="alert alert-danger text-center col-xs-offset-2 col-xs-8">@Model.Body</h4>
+        break;
+    case Message.MessageType.Info:
+        <h4 class="alert alert-info text-center col-xs-offset-2 col-xs-8">@Model.Body</h4>
+        break;
+}

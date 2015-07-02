@@ -1,0 +1,71 @@
+﻿@using System.Globalization
+@using MvcCalculator.Models;
+@model Movie
+
+@{
+    Layout = "~/Views/Shared/_Main.cshtml";
+    ViewBag.Title = "Details";
+}
+
+<div class="container-fluid">
+    <div class="row text-center">
+        <h1>@Model.Title (@Model.ReleaseDate.Year)</h1>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-4">
+            <img src="@Url.Content(Movie.CoversPathUrl + Model.Cover)" class="img-responsive img-rounded"/>
+        </div>
+        
+        <div class="col-xs-8">
+            <b>Genre: </b>@Model.Genre<br/>
+            <b>Rating: </b><span id="rating">@Model.Rating.ToString("F1")</span>
+
+            @using (Html.BeginForm("SetMark", "Movie", new {movieId = Model.MovieId}, FormMethod.Post, new {@class = "form-inline"}))
+            {
+                <b class="form-group">Your Mark: </b>
+                <div class="form-group">
+                    @{
+
+                        var selectListItems = new SelectListItem[11];
+                        var mark = Model.GetMark();
+                        selectListItems[0] = new SelectListItem() {Text = "-", Value = "0", Selected = (mark == 0)};
+                        for (var i = 1; i <= 10; i++)
+                        {
+                            selectListItems[i] = new SelectListItem() {Text = i.ToString(), Value = i.ToString(), Selected = (mark == i)};
+                        }
+                    }
+                    @Html.Raw(Html.DropDownList("mark", selectListItems, new {@class = "form-control", id = "mark"}).ToHtmlString())
+                </div>
+                <div class="form-group">
+                    <button type="button"
+                            class="btn btn-default form-control"
+                            onclick="setMark('@(Model.MovieId)', $('#mark').val())">
+                        Set Mark
+                    </button>
+                </div>
+            }
+
+            <b>Release date: </b>@(Model.ReleaseDate.ToString("d", new CultureInfo("ru-RU")))<br/>
+            <b>Actors: </b>
+            <button type="button" class="btn btn-default btn-sm" onclick="document.location.href='@Url.Action("AddActorsToMovie",
+                                                                                               new{movieId = Model.MovieId})'">
+                <span class="glyphicon glyphicon-plus"></span>
+            </button>
+            <br/>
+            @{
+                foreach (var actor in Model.Actors)
+                {
+                    <text>@(actor.Name + " " + actor.Surname )<br/></text>
+                }
+            }
+        </div>
+    </div>
+
+    <div class="row">
+        <br />
+        <div class="col-xs-offset-1 col-xs-10">
+            @Model.Description
+        </div>
+    </div>
+</div>

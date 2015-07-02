@@ -1,0 +1,41 @@
+﻿@using MvcCalculator.Helper
+@model System.Collections.IEnumerable
+
+@{
+    Layout = "~/Views/Shared/_Main.cshtml";
+    ViewBag.Title = "History";        
+}
+
+<h2>History</h2>
+
+<table class="table table-stripped">
+    <tr>
+        <td>Id</td>
+        <td>Date</td>
+        <td>Value 1</td>
+        <td>Value 2</td>
+        <td>Operation</td>
+        <td>IP</td>
+        <td>User</td>
+        <td>Show</td>
+    </tr>
+    
+    @foreach (HistoryEntry entry in Model)
+    {
+        <tr>
+            <td>@entry.id</td>
+            <td>@entry.date</td>
+            <td>@entry.v1</td>
+            <td>@entry.v2</td>
+            <td>@Translator.OperationToString(entry.operation.Value)</td>
+            <td>@entry.ip</td>
+            <td>@entry.user</td>
+            <td>
+                <button type="button" class="btn btn-default"
+                    onclick="document.location.href='@Url.Action("Calculate", new { v1 = entry.v1, v2 = entry.v2, operation = entry.operation, store = false })'">
+                    Show
+                </button>
+            </td>
+        </tr>
+    }
+</table>

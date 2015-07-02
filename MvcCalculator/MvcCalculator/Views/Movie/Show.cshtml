@@ -1,0 +1,83 @@
+﻿@using MvcCalculator.Helper
+@using MvcCalculator.Models;
+@model System.Collections.IEnumerable
+
+@{
+    Layout = "~/Views/Shared/_Main.cshtml";
+    ViewBag.Title = "Show Movies";
+}
+
+<h2>
+    Movies
+    <button type="button"
+            class="btn btn-default btn-sm"
+            onclick="document.location.href = '@Url.Action("Add")';">
+        <span class="glyphicon glyphicon-plus"></span>
+    </button>
+    <button type="button"
+            class="btn btn-info btn-sm"
+            onclick="document.location.href = '@Url.Action("Show", new {sort = SortingOptions.Oracul})'">
+        <b>Oracul Sort</b>
+    </button>
+</h2>
+
+<table class="table table-hover text-center">
+    <tr class="info">
+        <td></td>
+        <td style="vertical-align: middle">
+            <b>
+                <span class="glyphicon glyphicon-sort-by-alphabet"
+                      style="cursor: pointer"
+                      onclick="document.location.href='@Url.Action("Show", new {sort = SortingOptions.Title, ascending = true})';">
+                </span>
+                Title
+                <span class="glyphicon glyphicon-sort-by-alphabet-alt"
+                      style="cursor: pointer"
+                      onclick="document.location.href='@Url.Action("Show", new {sort = SortingOptions.Title, ascending = false})';">
+                </span>
+            </b>
+        </td>
+        <td style="vertical-align: middle"><b>Genre</b></td>
+        <td style="vertical-align: middle">
+            <b>
+                <span class="glyphicon glyphicon-sort-by-order"
+                      style="cursor: pointer"
+                      onclick="document.location.href='@Url.Action("Show", new {sort = SortingOptions.Rating, ascending = true})';">
+                </span>
+                Rating(marks number)
+                <span class="glyphicon glyphicon-sort-by-order-alt"
+                      style="cursor: pointer"
+                      onclick="document.location.href='@Url.Action("Show", new {sort = SortingOptions.Rating, ascending = false})'">
+                </span>
+            </b>
+        </td>
+        <td style="vertical-align: middle"><b>Your Mark</b></td>
+        <td style="vertical-align: middle">
+            <b>
+                <span class="glyphicon glyphicon-sort-by-order"
+                      style="cursor: pointer"
+                      onclick="document.location.href='@Url.Action("Show", new {sort = SortingOptions.ReleaseDate, ascending = true})'">
+                </span>
+                Release Date
+                <span class="glyphicon glyphicon-sort-by-order-alt"
+                      style="cursor: pointer"
+                      onclick="document.location.href='@Url.Action("Show", new {sort = SortingOptions.ReleaseDate, ascending = false})'">
+                </span>
+            </b>
+        </td>
+    </tr>
+
+    @foreach (Movie mov in Model)
+    {
+        <tr onclick="document.location.href='@Url.Action("Details", new {movieId = mov.MovieId})';">
+            <td class="col-xs-1">
+                <img src="@Url.Content(Movie.CoversPathUrl + mov.Cover)" class="img-responsive img-rounded" />
+            </td>
+            <td style="vertical-align: middle">@mov.Title</td>
+            <td style="vertical-align: middle">@mov.Genre</td>
+            <td style="vertical-align: middle">@(mov.Rating.ToString("F1") + "(" + mov.MarksNumber + ")")</td>
+            <td style="vertical-align: middle">@(mov.GetMark())</td>
+            <td style="vertical-align: middle">@mov.ReleaseDate.Year</td>
+        </tr>
+    }
+</table>

@@ -1,0 +1,20 @@
+﻿@model System.Collections.Generic.IEnumerable<string>
+
+@{
+    Layout = "~/Views/Shared/_Main.cshtml";
+    ViewBag.Title = "Registered Users";
+}
+
+<h2>Registered Users</h2>
+
+<table class="table table-striped">
+    <tr>
+        <td>Name</td>
+    </tr>
+    @foreach (var name in Model)
+    {
+        <tr>
+            <td>@Html.ActionLink(name, "UserInfo", new{@name = name})</td>
+        </tr>
+    }
+</table>

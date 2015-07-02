@@ -1,0 +1,157 @@
+﻿@using MvcCalculator.Models;
+@using MvcCalculator.Helper;
+
+@model RegistrationViewModel
+
+@{
+    Layout = "~/Views/Shared/_Main.cshtml";
+    ViewBag.Title = "Registration";
+}
+
+<h2>Registration</h2>
+
+@if (Model.Result == UserRegistrationResult.Success)
+{
+    <h2 style="color: green">Registration successful!</h2>
+}
+else
+{
+    if (Model.Result == UserRegistrationResult.AlreadyExists)
+    {
+        <h2 style="color: brown">This user already exists!</h2>
+    }
+    using (Html.BeginForm("Registration", "User", FormMethod.Get, new { @class = "form-horizontal", @role = "form" }))
+    {
+        <div id="inputNameDiv" class="form-group has-feedback">
+            @Html.Label("Name", new { @class = "col-sm-2 control-label" })
+            <div class="col-sm-10">
+                @Html.TextBox("name", Model.User.Name, new
+                {
+                    @id = "inputName",
+                    @class = "form-control",
+                    placeholder = "Name",
+                    required = "",
+                    @maxlength = "50"
+                })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.Label("Password", new { @class = "col-sm-2 control-label" })
+            <div class="col-sm-10">
+                @Html.Password("password", Model.User.Password, new
+                {
+                    @id = "password",
+                    @class = "form-control",
+                    @placeholder = "Password",
+                    @maxlength = "50"
+                })
+            </div>
+        </div>
+
+        <div id ="passwordConfirmationDiv" class="form-group has-feedback">
+            <div class="col-sm-offset-2 col-sm-10">
+                @Html.Password("passwordConfirmation", Model.User.Password, new
+                {
+                    @id = "passwordConfirmation",
+                    @class = "form-control",
+                    @placeholder = "Password Confirmation",
+                    @maxlength = "50"
+                })
+            </div>
+        </div>
+
+        <div id="userEmailDiv" class="form-group has-feedback">
+            @Html.Label("Email", new{@class="col-sm-2 control-label"})
+            <div class="col-sm-10">
+                @Html.TextBox("email", Model.User.Information.Email, new {
+                    @onchange = "EmailOnChange()",
+                    @class = "form-control",
+                    @id = "userEmail",
+                    @placeholder = "E-mail",
+                    @type = "email",
+                    @required = "",
+                    @pattern = "[^@]+@[^@]+\\.[a-zA-Z]{2,6}",
+                    @maxlength = "50"
+                })
+            </div>
+        </div>
+    
+        <div class="form-group">
+            @Html.Label("Birth Date", new { @class = "col-sm-2 control-label" })
+            <div class="col-sm-10">
+                @Html.TextBox("birthDate", Model.User.Information.BirthDate, new
+                {
+                    @class = "form-control datepicker",
+                    placeholder = "Birth Date"
+                })
+            </div>
+        </div>
+    
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <button type="submit" id="submit_btn" class="btn btn-default" disabled="disabled">Register</button>
+            </div>
+        </div>
+    }
+}
+
+<script type="text/javascript">
+    $("#inputName").change(function () {
+        $('#inputNameDiv')
+            .removeClass('has-error')
+            .removeClass('has-success');
+        $('#inputNameDiv').children('span').remove();
+
+        var t = $("#inputName");
+        var str = $(t).val();
+
+        if (str == "") {
+            return;
+        }
+            
+        $.ajax('/User/IsNameAvailable', {
+            type: 'POST',
+            data: { name: str },
+            success: function (data) {
+                var nameDiv = $('#inputNameDiv');
+                if (data.IsNameAvailable) {
+                    nameDiv.addClass('has-success');
+                    nameDiv.append('<span class="glyphicon glyphicon-ok form-control-feedback"></span>');
+                    $('#submit_btn').removeAttr('disabled');
+                } else {
+                    nameDiv.addClass('has-error');
+                    nameDiv.append('<span class="glyphicon glyphicon-remove form-control-feedback"></span>');
+                    $('#submit_btn').attr('disabled', 'disabled');
+                }
+            }
+        });
+    });
+
+    // Password confirmation
+    function confirmPw() {
+        $('#passwordConfirmationDiv')
+            .removeClass('has-error')
+            .removeClass('has-success');
+        $('#passwordConfirmationDiv').children('span').remove();
+        var pw = $('#password').val();
+        var pwc = $('#passwordConfirmation').val();
+        var pwcDiv = $('#passwordConfirmationDiv');
+        if (pw == '') {
+            $('#submit_btn').attr('disabled', 'disabled');
+        } else {
+            if (pw == pwc) {
+                pwcDiv.addClass('has-success');
+                pwcDiv.append('<span class="glyphicon glyphicon-ok form-control-feedback"></span>');
+                $('#submit_btn').removeAttr('disabled');
+            } else {
+                pwcDiv.addClass('has-error');
+                pwcDiv.append('<span class="glyphicon glyphicon-remove form-control-feedback"></span>');
+                $('#submit_btn').attr('disabled', 'disabled');
+            }
+        }
+    }
+
+    $('#password').change(confirmPw);
+    $('#passwordConfirmation').change(confirmPw);
+</script>
