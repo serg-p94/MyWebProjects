@@ -13,10 +13,19 @@ namespace UI.ConsoleApp
         static void Main(string[] args)
         {
             var um = UsersBootstrapper.GetUserManager();
+
+            //um.Register(new User { Login = "Admin", Password = "Admin" });
+            
             Console.WriteLine("Exists: " + um.Exists("Admin"));
             Console.WriteLine("GetUser: " + um.GetUser("Admin"));
             Console.WriteLine("Validate: " + um.Validate("Admin", "Admin"));
-            um.Register(new User { Login = "Admin", Password = "Admin" });
+
+            um.GetUser("Admin").AddPermission(Permission.ReadForum);
+            um.Update();
+
+            Console.WriteLine("Exists: " + um.Exists("Admin"));
+            Console.WriteLine("GetUser: " + um.GetUser("Admin"));
+            Console.WriteLine("Validate: " + um.Validate("Admin", "Admin"));
         }
     }
 }

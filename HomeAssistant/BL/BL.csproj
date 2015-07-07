@@ -40,9 +40,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Users\IUserManager.cs" />
+    <Compile Include="Users\IUserModifier.cs" />
     <Compile Include="Users\IUserRegistrator.cs" />
     <Compile Include="Users\IUserValidator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Users\Permission.cs" />
     <Compile Include="Users\User.cs" />
     <Compile Include="Users\UserRegistrationResult.cs" />
     <Compile Include="Users\UserValidationResult.cs" />

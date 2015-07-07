@@ -44,5 +44,19 @@ namespace DAL
             _context.SaveChanges();
             return UserRegistrationResult.Success;
         }
+
+        public void Remove(string login)
+        {
+            var user = _context.Users.SingleOrDefault(u=>u.Login == login);
+            if (user != null)
+            {
+                _context.Users.Remove(user);
+            }
+        }
+
+        public void Update()
+        {
+            _context.SaveChanges();
+        }
     }
 }

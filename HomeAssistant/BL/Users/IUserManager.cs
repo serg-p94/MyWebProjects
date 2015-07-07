@@ -1,6 +1,6 @@
 ﻿namespace BL.Users
 {
-    public interface IUserManager : IUserValidator, IUserRegistrator
+    public interface IUserManager : IUserValidator, IUserRegistrator, IUserModifier
     {
     }
 }
