@@ -73,7 +73,7 @@ namespace DAL
             return _context.Permissions.Any(p => p.Name == name);
         }
 
-        public Permission this[string name]
+        Permission IPermissionManager.this[string name]
         {
             get
             {

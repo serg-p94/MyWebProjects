@@ -1,17 +1,20 @@
-﻿using BL.Users;
+﻿using BL.Discussions;
+using BL.Users;
 using DAL;
 using Microsoft.Practices.Unity;
 
 namespace Bootstrapper
 {
-    public class UsersBootstrapper
+    public class Bootstrapper
     {
         private static UnityContainer _container = new UnityContainer();
 
-        static UsersBootstrapper()
+        static Bootstrapper()
         {
             _container.RegisterType<IUserManager, UserManager>(new PerThreadLifetimeManager());
             _container.RegisterType<IPermissionManager, UserManager>(new PerThreadLifetimeManager());
+
+            _container.RegisterType<IDiscussionManager, DiscussionManager>();
         }
 
         public static IUserManager GetUserManager()
@@ -22,6 +25,11 @@ namespace Bootstrapper
         public static IPermissionManager GetPermissionManager()
         {
             return _container.Resolve<IPermissionManager>();
+        }
+
+        public static IDiscussionManager GetDiscussionManager()
+        {
+            return _container.Resolve<IDiscussionManager>();
         }
     }
 }

@@ -8,7 +8,7 @@ namespace BL.Users
         public int Id { get; set; }
         public string Login { get; set; }
         public string Password { get; set; }
-        public virtual HashSet<Permission> Permissions { get; set; }
+        public virtual HashSet<Permission> Permissions { get; protected set; }
 
         public User()
         {

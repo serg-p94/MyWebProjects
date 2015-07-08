@@ -39,6 +39,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Discussions\Discussion.cs" />
+    <Compile Include="Discussions\IDiscussionManager.cs" />
+    <Compile Include="Discussions\Message.cs" />
     <Compile Include="Users\IPermissionManager.cs" />
     <Compile Include="Users\IUserManager.cs" />
     <Compile Include="Users\IUserModifier.cs" />
@@ -50,6 +53,7 @@
     <Compile Include="Users\UserRegistrationResult.cs" />
     <Compile Include="Users\UserValidationResult.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

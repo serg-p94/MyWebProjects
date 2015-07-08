@@ -1,4 +1,5 @@
-﻿using BL.Users;
+﻿using BL.Discussions;
+using BL.Users;
 using System;
 using System.Data.Entity;
 
@@ -13,5 +14,6 @@ namespace DAL
 
         public DbSet<User> Users { get; set; }
         public DbSet<Permission> Permissions { get; set; }
+        public DbSet<Discussion> Discussions { get; set; }
     }
 }

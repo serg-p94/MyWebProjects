@@ -6,7 +6,7 @@ namespace BL.Users
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public virtual HashSet<User> Users { get; set; }
+        public virtual HashSet<User> Users { get; protected set; }
 
         public Permission()
         {
