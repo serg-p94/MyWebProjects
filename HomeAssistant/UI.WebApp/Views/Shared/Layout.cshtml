@@ -1,0 +1,33 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+
+    <script type="text/javascript" src="~/Static/jquery-2.1.4.js"></script>
+    <script type="text/javascript" src="~/Static/bootstrap/js/bootstrap.js"></script>
+
+    <link rel="stylesheet" href="~/Static/bootstrap/css/bootstrap.css" />
+    <link rel="stylesheet" href="~/Static/bootstrap/css/bootstrap-theme.css" />
+</head>
+<body>
+    <div class="container">
+        <div>
+            <ul class="nav nav-pills pull-right">
+                <li>
+                    111
+                </li>
+                <li>
+                    222
+                </li>
+            </ul>
+            <h3 class="text-muted">Home Assistant</h3>
+            <br />
+        </div>
+        <div>
+            @RenderBody()
+        </div>
+    </div>
+</body>
+</html>

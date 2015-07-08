@@ -1,0 +1,21 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>LogIn</title>
+</head>
+<body>
+    @using(Html.BeginForm())
+    {
+        @Html.TextBox("login")
+        @Html.TextBox("password");
+        <button type="submit">Log In</button>
+    }
+</body>
+</html>

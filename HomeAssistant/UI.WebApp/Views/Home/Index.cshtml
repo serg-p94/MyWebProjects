@@ -1,18 +1,7 @@
 ﻿@{
-    Layout = null;
+    Layout = "../Shared/Layout.cshtml";
 }
-
-<!DOCTYPE html>
-
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>Index</title>
-</head>
-<body>
     <div>
-        <a href="@Url.Action("Register", "Users")">Registration</a>
+        <a href="@Url.Action("LogIn", "Users")">Log In</a>
         <a href="@Url.Action("Register", "Users")">Registration</a>
     </div>
-</body>
-</html>
