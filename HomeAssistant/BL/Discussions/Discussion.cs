@@ -12,5 +12,10 @@ namespace BL.Discussions
         {
             Messages = new List<Message>();
         }
+
+        public void RemoveMessage(Message message)
+        {
+            Messages.Remove(message);
+        }
     }
 }

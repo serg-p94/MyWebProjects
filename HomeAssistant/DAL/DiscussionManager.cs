@@ -25,6 +25,12 @@ namespace DAL
             return _context.Discussions;
         }
 
+        public void Remove(Discussion discussion)
+        {
+            _context.Discussions.Remove(discussion);
+            _context.SaveChanges();
+        }
+
         public void Update()
         {
             _context.SaveChanges();
