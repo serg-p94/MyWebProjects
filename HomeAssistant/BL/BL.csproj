@@ -39,6 +39,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Users\IPermissionManager.cs" />
     <Compile Include="Users\IUserManager.cs" />
     <Compile Include="Users\IUserModifier.cs" />
     <Compile Include="Users\IUserRegistrator.cs" />

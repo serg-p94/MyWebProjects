@@ -1,10 +1,11 @@
 ﻿using BL.Users;
+using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 
 namespace DAL
 {
-    public class UserManager : IUserManager
+    public class UserManager : IUserManager, IPermissionManager
     {
         private readonly MainDbContext _context;
         public static readonly string NameOrConnectionString = ConfigurationManager.ConnectionStrings["MainDbContext"].ConnectionString;
@@ -29,9 +30,12 @@ namespace DAL
             return _context.Users.Count(u => u.Login == login) > 0;
         }
 
-        public User GetUser(string login)
+        User IUserValidator.this[string login]
         {
-            return _context.Users.SingleOrDefault(u => u.Login == login);
+            get
+            {
+                return _context.Users.SingleOrDefault(u => u.Login == login);
+            }
         }
 
         public UserRegistrationResult Register(User user)
@@ -57,6 +61,29 @@ namespace DAL
         public void Update()
         {
             _context.SaveChanges();
+        }
+
+        public HashSet<Permission> GetPermissions()
+        {
+            return new HashSet<Permission>(_context.Permissions);
+        }
+
+        public bool PermissionExists(string name)
+        {
+            return _context.Permissions.Any(p => p.Name == name);
+        }
+
+        public Permission this[string name]
+        {
+            get
+            {
+                if (!PermissionExists(name))
+                {
+                    _context.Permissions.Add(new Permission { Name = name });
+                    _context.SaveChanges();
+                }
+                return _context.Permissions.Single(p => p.Name == name);
+            }
         }
     }
 }

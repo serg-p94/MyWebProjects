@@ -1,14 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace BL.Users
 {
-    public enum Permission
+    public class Permission
     {
-        ReadForum,
-        WriteForum
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public virtual HashSet<User> Users { get; set; }
+
+        public Permission()
+        {
+            Users = new HashSet<User>();
+        }
+
+        public override string ToString()
+        {
+            return string.Format("{0}: {1}", Id, Name);
+        }
     }
 }
