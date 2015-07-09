@@ -42,16 +42,12 @@ namespace UI.WebApp.Controllers
                 var result = um.Validate(login, password);
                 if (result == UserValidationResult.Success)
                 {
-                    FormsAuthentication.SetAuthCookie(login, false);
+                    var user = um.Users.Single(u => u.Login == login);
+                    FormsAuthentication.SetAuthCookie(user.Id.ToString(), false);
+                    Session["UserName"] = user.Login;
                 }
-                return RedirectToAction("LogInResult", new { result = result });
+                return RedirectToAction("Index", "Home");
             }
-        }
-
-        public ActionResult LogInResult(UserValidationResult result)
-        {
-            ViewBag.MenuItem = MenuItem.User;
-            return View(result);
         }
 
         public ActionResult ShowAll()
@@ -66,6 +62,12 @@ namespace UI.WebApp.Controllers
             ViewBag.MenuItem = MenuItem.User;
             var um = Loader.GetUserManager();
             return View(um.Users.SingleOrDefault(u => u.Id == id));
+        }
+
+        public ActionResult LogOut()
+        {
+            FormsAuthentication.SignOut();
+            return RedirectToAction("Index", "Home");
         }
     }
 }

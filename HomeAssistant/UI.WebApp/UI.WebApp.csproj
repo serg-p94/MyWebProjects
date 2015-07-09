@@ -110,7 +110,6 @@
     <Content Include="Views\Users\Registration.cshtml" />
     <Content Include="Views\Users\RegistrationResult.cshtml" />
     <Content Include="Views\Users\LogIn.cshtml" />
-    <Content Include="Views\Users\LogInResult.cshtml" />
     <Content Include="Static\bootstrap\config.json" />
     <Content Include="Static\bootstrap\fonts\glyphicons-halflings-regular.eot" />
     <Content Include="Static\bootstrap\fonts\glyphicons-halflings-regular.ttf" />
