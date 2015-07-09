@@ -6,7 +6,7 @@ namespace BL.Discussions
     {
         public int Id { get; set; }
         public string Title { get; set; }
-        public List<Message> Messages { get; set; }
+        public virtual List<Message> Messages { get; set; }
 
         public Discussion()
         {

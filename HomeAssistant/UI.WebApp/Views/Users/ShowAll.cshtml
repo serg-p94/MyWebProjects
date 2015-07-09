@@ -1,0 +1,25 @@
+﻿@using BL.Users
+@using System.Linq
+
+@model IQueryable<User>
+
+@{
+    ViewBag.Title = "All Users";
+    Layout = "~/Views/Shared/Layout.cshtml";
+}
+
+<table class="table table-striped text-center">
+    <tr>
+        <td><b>Id</b></td>
+        <td><b>Login</b></td>
+        <td><b>Password</b></td>
+    </tr>
+    @foreach (var user in Model)
+    {
+        <tr class="clickable" onclick="document.location.href='@Url.Action("Details", "Users", new { id = user.Id })'">
+            <td>@user.Id</td>
+            <td>@user.Login</td>
+            <td>@user.Password</td>
+        </tr>
+    }
+</table>

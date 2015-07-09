@@ -4,7 +4,5 @@
     {
         UserValidationResult Validate(string login, string password);
         bool Exists(string login);
-
-        User this[string login] { get; }
     }
 }

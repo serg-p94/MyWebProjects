@@ -12,7 +12,7 @@ namespace DAL
 
         public UserManager()
         {
-            _context = new MainDbContext(NameOrConnectionString);
+            _context = MainDbContext.GetInstance(NameOrConnectionString);
         }
 
         public UserValidationResult Validate(string login, string password)
@@ -30,7 +30,12 @@ namespace DAL
             return _context.Users.Count(u => u.Login == login) > 0;
         }
 
-        User IUserValidator.this[string login]
+        IQueryable<User> IUserReader.Users
+        {
+            get { return _context.Users; }
+        }
+
+        User IUserReader.this[string login]
         {
             get
             {
@@ -51,7 +56,7 @@ namespace DAL
 
         public void Remove(string login)
         {
-            var user = _context.Users.SingleOrDefault(u=>u.Login == login);
+            var user = _context.Users.SingleOrDefault(u => u.Login == login);
             if (user != null)
             {
                 _context.Users.Remove(user);

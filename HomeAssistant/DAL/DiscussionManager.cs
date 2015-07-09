@@ -11,7 +11,7 @@ namespace DAL
 
         public DiscussionManager()
         {
-            _context = new MainDbContext(NameOrConnectionString);
+            _context = MainDbContext.GetInstance(NameOrConnectionString);
         }
 
         public void CreateDiscussion(string tilte)

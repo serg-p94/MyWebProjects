@@ -10,31 +10,23 @@ namespace UI.ConsoleApp
     {
         static void Main(string[] args)
         {
-            var um = Bootstrapper.Bootstrapper.GetUserManager();
-            var pm = Bootstrapper.Bootstrapper.GetPermissionManager();
+            var um = Bootstrapper.Loader.GetUserManager();
+            var pm = Bootstrapper.Loader.GetPermissionManager();
 
             um.Register(new User { Login = "Admin", Password = "Admin" });
-            um.Register(new User { Login = "Sergei", Password = "111" });
-            
-            Console.WriteLine("Exists: " + um.Exists("Admin"));
-            Console.WriteLine("GetUser: " + um["Admin"]);
-            Console.WriteLine("Validate: " + um.Validate("Admin", "Admin"));
 
             um["Admin"].AddPermission(pm["Read Forum"]);
-            um["Sergei"].AddPermission(pm["Read Forum"]);
-            um["Sergei"].AddPermission(pm["Write Forum"]);
+            um["Admin"].AddPermission(pm["Write Forum"]);
             um.Update();
 
-            Console.WriteLine("Exists: " + um.Exists("Admin"));
-            Console.WriteLine("GetUser: " + um["Admin"]);
-            Console.WriteLine("Validate: " + um.Validate("Admin", "Admin"));
-
-
-            var dm = Bootstrapper.Bootstrapper.GetDiscussionManager();
-            dm.CreateDiscussion("Test disc");
-            dm.GetDiscussions().FirstOrDefault().Messages.Add(new Message
+            var dm = Bootstrapper.Loader.GetDiscussionManager();
+            dm.CreateDiscussion("First discussion");
+            dm.CreateDiscussion("Second discussion");
+            var disc = dm.GetDiscussions().First();
+            var admin = um["Admin"];
+            disc.Messages.Add(new Message
             {
-                Author = Bootstrapper.Bootstrapper.GetUserManager()["Admin"],
+                Author = admin,
                 Body = "Test msg",
                 Date = DateTime.Now
             });

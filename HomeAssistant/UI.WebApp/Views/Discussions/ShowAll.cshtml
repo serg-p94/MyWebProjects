@@ -1,0 +1,25 @@
+﻿@using BL.Discussions
+
+@model IQueryable<Discussion>
+
+@{
+    ViewBag.Title = "All Discussions";
+    Layout = "~/Views/Shared/Layout.cshtml";
+}
+
+<table class="table table-responsive table-striped text-center">
+    <tr class="text-info">
+        <td><b>Id</b></td>
+        <td><b>Title</b></td>
+        <td><b>Messages</b></td>
+    </tr>
+    @foreach (var discussion in Model)
+    {
+        <tr class="clickable" onclick="document.location.href = '@Url.Action("Show", new { id = discussion.Id })'">
+            <td>@discussion.Id</td>
+            <td>@discussion.Title</td>
+            <td>@discussion.Messages.Count</td>
+        </tr>
+    }
+</table>
+

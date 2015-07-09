@@ -1,0 +1,26 @@
+﻿@model BL.Users.User
+
+
+@{
+    ViewBag.Title = "User Details";
+    Layout = "~/Views/Shared/Layout.cshtml";
+}
+
+<h1 class="page-header text-center">@Model.Login</h1>
+
+<table class="table table-bordered">
+    <tr>
+        <td width="30%"><b>Id:</b></td>
+        <td width="70%">@Model.Id</td>
+    </tr>
+
+    <tr>
+        <td width="30%"><b>Login:</b></td>
+        <td width="70%">@Model.Login</td>
+    </tr>
+
+    <tr>
+        <td width="30%"><b>Password:</b></td>
+        <td width="70%">@Model.Password</td>
+    </tr>
+</table>

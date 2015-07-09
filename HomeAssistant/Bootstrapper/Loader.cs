@@ -2,17 +2,18 @@
 using BL.Users;
 using DAL;
 using Microsoft.Practices.Unity;
+using System.Configuration;
 
 namespace Bootstrapper
 {
-    public class Bootstrapper
+    public class Loader
     {
         private static UnityContainer _container = new UnityContainer();
 
-        static Bootstrapper()
+        static Loader()
         {
-            _container.RegisterType<IUserManager, UserManager>(new PerThreadLifetimeManager());
-            _container.RegisterType<IPermissionManager, UserManager>(new PerThreadLifetimeManager());
+            _container.RegisterType<IUserManager, UserManager>(new ContainerControlledLifetimeManager());
+            _container.RegisterType<IPermissionManager, UserManager>(new ContainerControlledLifetimeManager());
 
             _container.RegisterType<IDiscussionManager, DiscussionManager>();
         }

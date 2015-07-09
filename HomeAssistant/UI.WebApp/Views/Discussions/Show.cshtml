@@ -1,0 +1,30 @@
+﻿@using BL.Discussions
+
+@model Discussion
+
+@{
+    ViewBag.Title = string.Format("Discussion '{0}'", Model.Title);
+    Layout = "~/Views/Shared/Layout.cshtml";
+}
+
+<h1 class="text-center page-header">@Model.Title</h1>
+
+<table class="table table-striped text-center">
+    <tr>
+        <td><b>Id</b></td>
+        <td><b>Author</b></td>
+        <td><b>Body</b></td>
+        <td><b>Date</b></td>
+    </tr>
+
+    @foreach (var msg in Model.Messages)
+    {
+        <tr>
+            <td>@msg.Id</td>
+            <td>@msg.Author.Login</td>
+            <td>@msg.Body</td>
+            <td>@msg.Date</td>
+        </tr>
+    }
+</table>
+

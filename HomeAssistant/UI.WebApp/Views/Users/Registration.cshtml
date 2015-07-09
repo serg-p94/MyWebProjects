@@ -2,10 +2,10 @@
 
 @{
     Layout = "../Shared/Layout.cshtml";
-    ViewBag.Title = "Log In";
+    ViewBag.Title = "User Registration";
 }
 
-@using (Html.BeginForm("LogIn", "User", FormMethod.Post, new { @class = "form-horizintal", @role = "form" }))
+@using (Html.BeginForm("Registration", "User", FormMethod.Post, new { @class = "form-horizintal", @role = "form" }))
 {
     <div class="form-group row">
         <label class="col-xs-2 control-label">Login</label>
@@ -19,5 +19,5 @@
             @Html.TextBox("password", Model.Password, new { @class = "form-control", placeholder = "Password", required = "" })
         </div>
     </div>
-    <button class="btn btn-default pull-right" type="submit">Log In</button>
+    <button class="btn btn-default pull-right" type="submit">Register</button>
 }

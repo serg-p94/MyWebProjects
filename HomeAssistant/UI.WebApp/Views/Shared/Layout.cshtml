@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@using UI.WebApp.Helpers
+
+<!DOCTYPE html>
 
 <html>
 <head>
@@ -10,19 +12,32 @@
 
     <link rel="stylesheet" href="~/Static/bootstrap/css/bootstrap.css" />
     <link rel="stylesheet" href="~/Static/bootstrap/css/bootstrap-theme.css" />
+
+    <link rel="stylesheet" href="~/Static/styles.css" />
 </head>
 <body>
     <div class="container">
         <div>
-            <ul class="nav nav-pills pull-right">
-                <li>
-                    111
+            <ul class="nav nav-tabs pull-right">
+                <li class="@Html.Raw(ViewBag.MenuItem == MenuItem.Home ? "active" : null)">
+                    @Html.ActionLink("Home", "Index", "Home")
                 </li>
-                <li>
-                    222
+
+                <li class="@Html.Raw(ViewBag.MenuItem == MenuItem.Discussions ? "active" : null)">
+                    @Html.ActionLink("Discussions", "ShowAll", "Discussions")
+                </li>
+
+                <li class="dropdown @Html.Raw(ViewBag.MenuItem == MenuItem.User ? "active" : null)">
+                    <a class="dropdown-toggle" href="#" data-toggle="dropdown">User<b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li>@Html.ActionLink("Log In", "LogIn", "Users")</li>
+                        <li>@Html.ActionLink("Registration", "Registration", "Users")</li>
+                        <li>@Html.ActionLink("Show All", "ShowAll", "Users")</li>
+                    </ul>
                 </li>
             </ul>
-            <h3 class="text-muted">Home Assistant</h3>
+
+            <h3 class="text-muted clickable" onclick="document.location.href='@Url.Action("Index", "Home")'">Home Assistant</h3>
             <br />
         </div>
         <div>
