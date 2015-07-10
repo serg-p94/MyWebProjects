@@ -27,6 +27,7 @@ namespace UI.WebApp
             var authTicket = FormsAuthentication.Decrypt(authCookie.Value);
             var userInfo = new JavaScriptSerializer().Deserialize<UserInfo>(authTicket.UserData);
             var user = new CustomPrincipal(authTicket.Name) {Id = userInfo.Id, Login = userInfo.Login};
+            user.Permissions.UnionWith(user.Permissions);
 
             HttpContext.Current.User = user;
         }

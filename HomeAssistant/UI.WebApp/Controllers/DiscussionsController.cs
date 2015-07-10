@@ -5,6 +5,7 @@ using Bootstrapper;
 
 namespace UI.WebApp.Controllers
 {
+    [Authorize(Roles = "Read Forum")]
     public class DiscussionsController : BaseController
     {
         public ActionResult ShowAll()
