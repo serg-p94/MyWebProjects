@@ -31,7 +31,7 @@
                 }
 
                 <li class="dropdown @Html.Raw(ViewBag.MenuItem == MenuItem.User ? "active" : null)">
-                    <a class="dropdown-toggle" href="#" data-toggle="dropdown">@(User.Identity.IsAuthenticated ? Session["UserName"] : "User")<b class="caret"></b></a>
+                    <a class="dropdown-toggle" href="#" data-toggle="dropdown">@(User.Identity.IsAuthenticated ?  User.Login : "User")<b class="caret"></b></a>
                     <ul class="dropdown-menu">
                         @if(!User.Identity.IsAuthenticated)
                         {

@@ -1,14 +1,17 @@
-﻿using BL.Users;
+﻿using System;
+using BL.Users;
 using Bootstrapper;
 using System.Web.Mvc;
 using System.Web.Security;
 using UI.WebApp.Helpers;
 using System.Linq;
+using System.Web;
+using System.Web.Script.Serialization;
 using UI.WebApp.Models.Users;
 
 namespace UI.WebApp.Controllers
 {
-    public class UsersController : Controller
+    public class UsersController : BaseController
     {
         public ActionResult Registration(string login, string password)
         {
@@ -39,13 +42,18 @@ namespace UI.WebApp.Controllers
             }
             else
             {
-                var um = Bootstrapper.Loader.GetUserManager();
+                var um = Loader.GetUserManager();
                 var result = um.Validate(login, password);
                 if (result == UserValidationResult.Success)
                 {
                     var user = um.Users.Single(u => u.Login == login);
-                    FormsAuthentication.SetAuthCookie(user.Id.ToString(), false);
-                    Session["UserName"] = user.Login;
+                    var userInfo = new UserInfo {Id = user.Id, Login = user.Login};
+                    var userData = new JavaScriptSerializer().Serialize(userInfo);
+                    var authTicket = new FormsAuthenticationTicket(version: 1, name: user.Id.ToString(),
+                        issueDate: DateTime.Now, expiration: DateTime.MaxValue, isPersistent: false, userData: userData);
+                    var encTicket = FormsAuthentication.Encrypt(authTicket);
+                    var authCookie = new HttpCookie(FormsAuthentication.FormsCookieName, encTicket);
+                    Response.Cookies.Add(authCookie);
                 }
                 return RedirectToAction("Index", "Home");
             }
@@ -74,6 +82,7 @@ namespace UI.WebApp.Controllers
         public ActionResult LogOut()
         {
             FormsAuthentication.SignOut();
+            HttpContext.Cache.Remove("UserName");
             return RedirectToAction("Index", "Home");
         }
 

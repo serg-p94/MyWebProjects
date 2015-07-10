@@ -101,14 +101,21 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\BaseController.cs" />
+    <Compile Include="Helpers\BaseWebViewPage.cs" />
+    <Compile Include="Helpers\CustomPrincipal.cs" />
+    <Compile Include="Helpers\ICustomPrincipal.cs" />
     <Compile Include="Helpers\MenuItem.cs" />
     <Compile Include="Models\Users\DetailsViewModel.cs" />
+    <Compile Include="Models\Users\UserInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\web.config" />
     <Content Include="packages.config" />
-    <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Home\Index.cshtml">
+      <SubType>ASPXCodeBehind</SubType>
+    </Content>
     <Content Include="Views\Users\Registration.cshtml" />
     <Content Include="Views\Users\RegistrationResult.cshtml" />
     <Content Include="Views\Users\LogIn.cshtml" />

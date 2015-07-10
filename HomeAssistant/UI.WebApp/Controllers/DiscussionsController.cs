@@ -5,7 +5,7 @@ using Bootstrapper;
 
 namespace UI.WebApp.Controllers
 {
-    public class DiscussionsController : Controller
+    public class DiscussionsController : BaseController
     {
         public ActionResult ShowAll()
         {
