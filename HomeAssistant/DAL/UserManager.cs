@@ -8,7 +8,9 @@ namespace DAL
     public class UserManager : IUserManager, IPermissionManager
     {
         private readonly MainDbContext _context;
-        public static readonly string NameOrConnectionString = ConfigurationManager.ConnectionStrings["MainDbContext"].ConnectionString;
+
+        public static readonly string NameOrConnectionString =
+            ConfigurationManager.ConnectionStrings["MainDbContext"].ConnectionString;
 
         public UserManager()
         {
@@ -37,10 +39,7 @@ namespace DAL
 
         User IUserReader.this[string login]
         {
-            get
-            {
-                return _context.Users.SingleOrDefault(u => u.Login == login);
-            }
+            get { return _context.Users.SingleOrDefault(u => u.Login == login); }
         }
 
         public UserRegistrationResult Register(User user)
@@ -68,9 +67,9 @@ namespace DAL
             _context.SaveChanges();
         }
 
-        public HashSet<Permission> GetPermissions()
+        public HashSet<Permission> Permissions
         {
-            return new HashSet<Permission>(_context.Permissions);
+            get { return new HashSet<Permission>(_context.Permissions); }
         }
 
         public bool PermissionExists(string name)

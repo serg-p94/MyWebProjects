@@ -4,6 +4,7 @@ using System.Web.Mvc;
 using System.Web.Security;
 using UI.WebApp.Helpers;
 using System.Linq;
+using UI.WebApp.Models.Users;
 
 namespace UI.WebApp.Controllers
 {
@@ -61,13 +62,41 @@ namespace UI.WebApp.Controllers
         {
             ViewBag.MenuItem = MenuItem.User;
             var um = Loader.GetUserManager();
-            return View(um.Users.SingleOrDefault(u => u.Id == id));
+            var pm = Loader.GetPermissionManager();
+            var viewModel = new DetailsViewModel
+            {
+                User = um.Users.SingleOrDefault(u => u.Id == id),
+                Permissions = pm.Permissions
+            };
+            return View(viewModel);
         }
 
         public ActionResult LogOut()
         {
             FormsAuthentication.SignOut();
             return RedirectToAction("Index", "Home");
+        }
+
+        public JsonResult SetUserPermission(int userId, int permissionId, bool value)
+        {
+            var um = Loader.GetUserManager();
+            var pm = Loader.GetPermissionManager();
+            var user = um.Users.Single(u => u.Id == userId);
+            var permission = pm.Permissions.Single(p => p.Id == permissionId);
+            if (user.HasPermission(permission) == value)
+            {
+                return new JsonResult {Data = new {result = "sucess"}};
+            }
+            if (value)
+            {
+                user.AddPermission(permission);
+            }
+            else
+            {
+                user.RemovePermission(permission);
+            }
+            um.Update();
+            return new JsonResult { Data = new { result = "sucess" }};
         }
     }
 }

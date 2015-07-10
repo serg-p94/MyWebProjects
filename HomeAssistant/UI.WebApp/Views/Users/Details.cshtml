@@ -1,26 +1,46 @@
-﻿@model BL.Users.User
-
+﻿@model UI.WebApp.Models.Users.DetailsViewModel
 
 @{
     ViewBag.Title = "User Details";
     Layout = "~/Views/Shared/Layout.cshtml";
 }
 
-<h1 class="page-header text-center">@Model.Login</h1>
+<script type="text/javascript" src="../../Static/Users.js"></script>
+
+<h1 class="page-header text-center">@Model.User.Login</h1>
 
 <table class="table table-bordered">
     <tr>
         <td width="30%"><b>Id:</b></td>
-        <td width="70%">@Model.Id</td>
+        <td width="70%">@Model.User.Id</td>
     </tr>
 
     <tr>
         <td width="30%"><b>Login:</b></td>
-        <td width="70%">@Model.Login</td>
+        <td width="70%">@Model.User.Login</td>
     </tr>
 
     <tr>
         <td width="30%"><b>Password:</b></td>
-        <td width="70%">@Model.Password</td>
+        <td width="70%">@Model.User.Password</td>
     </tr>
 </table>
+
+<h3 class="text-center text-underlined">Permissions</h3>
+
+<div class="col-xs-offset-1">
+    @foreach (var permission in Model.Permissions)
+    {
+        <div class="checkbox row">
+            <label>
+                @Html.CheckBox(name: string.Format("permission_{0}", permission.Id),
+                    isChecked: Model.User.Permissions.Contains(permission),
+                    htmlAttributes: new
+                    {
+                        onclick = "setUserPermission(" + Model.User.Id + ", " + permission.Id + ", this.checked, '" + @Url.Action("SetUserPermission") + "')"
+                    })
+                @(permission.Name)
+            </label>
+        </div>
+    }
+</div>

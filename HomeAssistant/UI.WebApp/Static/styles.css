@@ -1,3 +1,7 @@
 ﻿.clickable {
     cursor: pointer;
 }
+
+.text-underlined {
+    text-decoration: underline;
+}

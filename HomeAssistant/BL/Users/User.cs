@@ -25,6 +25,14 @@ namespace BL.Users
             Permissions.Add(permission);
         }
 
+        public void RemovePermission(Permission permission)
+        {
+            if (HasPermission(permission))
+            {
+                Permissions.Remove(permission);
+            }
+        }
+
         public override string ToString()
         {
             var sb = new StringBuilder();
