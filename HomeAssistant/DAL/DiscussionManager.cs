@@ -20,9 +20,9 @@ namespace DAL
             _context.SaveChanges();
         }
 
-        public IQueryable<Discussion> GetDiscussions()
+        public IQueryable<Discussion> Discussions
         {
-            return _context.Discussions;
+            get { return _context.Discussions; }
         }
 
         public void Remove(Discussion discussion)

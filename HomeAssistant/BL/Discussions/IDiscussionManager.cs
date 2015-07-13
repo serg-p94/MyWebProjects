@@ -1,12 +1,11 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 
 namespace BL.Discussions
 {
     public interface IDiscussionManager
     {
         void CreateDiscussion(string tilte);
-        IQueryable<Discussion> GetDiscussions();
+        IQueryable<Discussion> Discussions { get; }
         void Update();
     }
 }

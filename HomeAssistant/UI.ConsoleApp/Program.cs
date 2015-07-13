@@ -22,7 +22,7 @@ namespace UI.ConsoleApp
             var dm = Bootstrapper.Loader.GetDiscussionManager();
             dm.CreateDiscussion("First discussion");
             dm.CreateDiscussion("Second discussion");
-            var disc = dm.GetDiscussions().First();
+            var disc = dm.Discussions.First();
             var admin = um["Admin"];
             disc.Messages.Add(new Message
             {

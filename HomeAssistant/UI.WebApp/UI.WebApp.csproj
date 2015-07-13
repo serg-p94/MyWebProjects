@@ -106,6 +106,7 @@
     <Compile Include="Helpers\CustomPrincipal.cs" />
     <Compile Include="Helpers\ICustomPrincipal.cs" />
     <Compile Include="Helpers\MenuItem.cs" />
+    <Compile Include="Helpers\Converter.cs" />
     <Compile Include="Models\Users\DetailsViewModel.cs" />
     <Compile Include="Models\Users\UserInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

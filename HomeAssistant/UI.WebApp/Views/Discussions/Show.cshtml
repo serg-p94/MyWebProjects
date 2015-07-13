@@ -9,22 +9,95 @@
 
 <h1 class="text-center page-header">@Model.Title</h1>
 
-<table class="table table-striped text-center">
+<table id="messages-table" class="table table-striped text-center">
     <tr>
         <td><b>Id</b></td>
         <td><b>Author</b></td>
         <td><b>Body</b></td>
         <td><b>Date</b></td>
+        <td></td>
     </tr>
 
     @foreach (var msg in Model.Messages)
     {
         <tr>
-            <td>@msg.Id</td>
+            <td class="msg-id">@msg.Id</td>
             <td>@msg.Author.Login</td>
             <td>@msg.Body</td>
             <td>@msg.Date</td>
+            <td><span class="clickable glyphicon glyphicon-remove" onclick="removeMessage(@Model.Id, $(this).parentsUntil('tr').parent(), '@Url.Action("RemoveMessage")')"></span></td>
         </tr>
     }
 </table>
 
+<script type="text/javascript">
+    function viewMessage(msg) {
+        var msgTable = $('#messages-table');
+        var row = $(document.createElement('tr'));
+        row.append($(document.createElement('td')).addClass('msg-id').append(msg.Id));
+        row.append($(document.createElement('td')).append(msg.Author.Login));
+        row.append($(document.createElement('td')).append(msg.Body));
+        row.append($(document.createElement('td')).append(msg.Date));
+        row.append($(document.createElement('td')).append(
+            $(document.createElement('span'))
+                .addClass('glyphicon')
+                .addClass('glyphicon-remove')
+                .addClass('clickable')
+                .click(function () {
+                    removeMessage(@Model.Id, $(this).parentsUntil('tr').parent(), '@Url.Action("RemoveMessage")');
+                }
+            )
+            )
+        );
+        msgTable.append(row);
+    }
+
+    function sendMessage(discussionId, msg, url) {
+        var options = {
+            url: url,
+            method: 'POST',
+            data: {
+                discussionId: discussionId,
+                message: msg
+            },
+            success: function(data) {
+                $('#msg-area').val('');
+                viewMessage(data.message);
+            }
+        };
+        $.ajax(options);
+    }
+
+    function getMessages(discussionId, url) {
+        var options = {
+            url: url,
+            data: {discussionId: discussionId},
+            method: 'POST',
+            success: function(data) {
+                alert('recieved');
+            }
+        };
+        $.ajax(options);
+    }
+
+    function removeMessage(discussionId, messageRow, url) {
+        var messageId = messageRow.children('.msg-id').first().text();
+        var options = {
+            url: url,
+            data: { discussionId: discussionId, messageId: messageId },
+            method: 'POST',
+            success: function() {
+                messageRow.remove();
+            }
+        };
+        $.ajax(options);
+    }
+</script>
+
+<div class="form-horizontal">
+    @Html.TextArea("message", new {@class = "form-control", rows = 3, id = "msg-area"})
+    <button class="btn btn-info clickable" onclick="sendMessage(@Model.Id, $('#msg-area').val(), '@Url.Action("SendMessage")')" style="margin-top: 10px">Send</button>
+</div>
+
+
+<button onclick="getMessages(@Model.Id, '@Url.Action("GetAllMessages")')"></button>
