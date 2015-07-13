@@ -33,7 +33,7 @@ namespace UI.WebApp.Controllers
             return View(result);
         }
 
-        public ActionResult LogIn(string login, string password)
+        public ActionResult LogIn(string login, string password, string remember)
         {
             ViewBag.MenuItem = MenuItem.User;
             if (login == null && password == null)
@@ -51,9 +51,14 @@ namespace UI.WebApp.Controllers
                     userInfo.PermissionIds.AddRange(user.Permissions.Select(p => p.Id));
                     var userData = new JavaScriptSerializer().Serialize(userInfo);
                     var authTicket = new FormsAuthenticationTicket(version: 1, name: user.Id.ToString(),
-                        issueDate: DateTime.Now, expiration: DateTime.MaxValue, isPersistent: false, userData: userData);
+                        issueDate: DateTime.Now, expiration: DateTime.MaxValue,
+                        isPersistent: remember == "on", userData: userData);
                     var encTicket = FormsAuthentication.Encrypt(authTicket);
                     var authCookie = new HttpCookie(FormsAuthentication.FormsCookieName, encTicket);
+                    if (authTicket.IsPersistent)
+                    {
+                        authCookie.Expires = authTicket.Expiration;
+                    }
                     Response.Cookies.Add(authCookie);
                 }
                 return RedirectToAction("Index", "Home");

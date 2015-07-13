@@ -7,17 +7,19 @@
 
 @using (Html.BeginForm("LogIn", "Users", FormMethod.Post, new { @class = "form-horizintal", @role = "form" }))
 {
-    <div class="form-group row">
-        <label class="col-xs-2 control-label">Login</label>
-        <div class="col-xs-10">
-            @Html.TextBox("login", Model.Login, new { @class = "form-control", placeholder = "Login", required = "" })
-        </div>
+    <div class="form-group">
+        <label class="control-label">Login</label>
+        @Html.TextBox("login", Model.Login, new { @class = "form-control", placeholder = "Login", required = "" })
     </div>
-    <div class="form-group row">
-        <label class="col-xs-2 control-label">Password</label>
-        <div class="col-xs-10">
-            @Html.TextBox("password", Model.Password, new { @class = "form-control", placeholder = "Password", required = "" })
-        </div>
+    <div class="form-group">
+        <label class="control-label">Password</label>
+        @Html.TextBox("password", Model.Password, new {@class = "form-control", placeholder = "Password", required = ""})
+    </div>
+    <div class="checkbox">
+        <label>
+            <input type="checkbox" name="remember"/>
+            Remember
+        </label>
     </div>
     <button class="btn btn-default pull-right" type="submit">Log In</button>
 }
