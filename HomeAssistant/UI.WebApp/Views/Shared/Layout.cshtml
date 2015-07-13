@@ -23,7 +23,7 @@
                     @Html.ActionLink("Home", "Index", "Home")
                 </li>
 
-                @if (User != null && User.Identity.IsAuthenticated)
+                @if (User.Identity.IsAuthenticated)
                 {
                     <li class="@Html.Raw(ViewBag.MenuItem == MenuItem.Discussions ? "active" : null)">
                         @Html.ActionLink("Discussions", "ShowAll", "Discussions")
@@ -31,9 +31,9 @@
                 }
 
                 <li class="dropdown @Html.Raw(ViewBag.MenuItem == MenuItem.User ? "active" : null)">
-                    <a class="dropdown-toggle" href="#" data-toggle="dropdown">@(User != null && User.Identity.IsAuthenticated ?  User.Login : "User")<b class="caret"></b></a>
+                    <a class="dropdown-toggle" href="#" data-toggle="dropdown">@(User.Identity.IsAuthenticated ?  User.Login : "User")<b class="caret"></b></a>
                     <ul class="dropdown-menu">
-                        @if(User == null || !User.Identity.IsAuthenticated)
+                        @if(!User.Identity.IsAuthenticated)
                         {
                             <li>@Html.ActionLink("Log In", "LogIn", "Users")</li>
                             <li>@Html.ActionLink("Registration", "Registration", "Users")</li>

@@ -7,10 +7,19 @@ namespace UI.WebApp.Helpers
 {
     public class CustomPrincipal : ICustomPrincipal
     {
-        public CustomPrincipal(string id)
+        protected CustomPrincipal()
+        {
+            Permissions = new HashSet<Permission>();
+        }
+
+        public CustomPrincipal(string id) : this()
         {
             Identity = new GenericIdentity(id);
-            Permissions = new HashSet<Permission>();
+        }
+
+        public CustomPrincipal(IIdentity identity) : this()
+        {
+            Identity = identity;
         }
 
         public bool IsInRole(string role)
