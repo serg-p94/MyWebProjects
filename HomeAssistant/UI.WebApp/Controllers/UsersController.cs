@@ -48,7 +48,7 @@ namespace UI.WebApp.Controllers
                 {
                     var user = um.Users.Single(u => u.Login == login);
                     var userInfo = new UserInfo {Id = user.Id, Login = user.Login};
-                    userInfo.Permissions.UnionWith(user.Permissions);
+                    userInfo.PermissionIds.AddRange(user.Permissions.Select(p => p.Id));
                     var userData = new JavaScriptSerializer().Serialize(userInfo);
                     var authTicket = new FormsAuthenticationTicket(version: 1, name: user.Id.ToString(),
                         issueDate: DateTime.Now, expiration: DateTime.MaxValue, isPersistent: false, userData: userData);

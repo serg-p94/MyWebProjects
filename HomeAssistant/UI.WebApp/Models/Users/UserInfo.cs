@@ -7,11 +7,11 @@ namespace UI.WebApp.Models.Users
     {
         public UserInfo()
         {
-            Permissions = new HashSet<Permission>();
+            PermissionIds = new List<int>();
         }
 
         public int Id { get; set; }
         public string Login { get; set; }
-        public HashSet<Permission> Permissions { get; set; }
+        public List<int> PermissionIds { get; set; }
     }
 }
