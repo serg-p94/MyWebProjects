@@ -4,11 +4,9 @@ using System.Security.Principal;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
-using System.Web.Script.Serialization;
 using System.Web.Security;
 using Bootstrapper;
 using UI.WebApp.Helpers;
-using UI.WebApp.Models.Users;
 
 namespace UI.WebApp
 {
@@ -29,12 +27,13 @@ namespace UI.WebApp
                 return;
             }
             var authTicket = FormsAuthentication.Decrypt(authCookie.Value);
-            var userInfo = new JavaScriptSerializer().Deserialize<UserInfo>(authTicket.UserData);
-            var user = new CustomPrincipal(authTicket.Name) {Id = userInfo.Id, Login = userInfo.Login};
-            var pm = Loader.GetPermissionManager();
-            user.Permissions.UnionWith(userInfo.PermissionIds.Select(pi => pm.Permissions.Single(p => p.Id == pi)));
+            var userId = int.Parse(authTicket.Name);
+            var um = Loader.GetUserManager();
+            var user = um.Users.Single(u => u.Id == userId);
+            var principal = new CustomPrincipal(authTicket.Name) {Id = user.Id, Login = user.Login};
+            principal.Permissions.UnionWith(user.Permissions);
 
-            HttpContext.Current.User = user;
+            HttpContext.Current.User = principal;
         }
     }
 }

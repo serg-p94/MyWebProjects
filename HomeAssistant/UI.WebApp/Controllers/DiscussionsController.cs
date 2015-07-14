@@ -38,6 +38,7 @@ namespace UI.WebApp.Controllers
             return new JsonResult {Data = data, JsonRequestBehavior = JsonRequestBehavior.AllowGet};
         }
 
+        [Authorize(Roles = "Write Forum")]
         public JsonResult RemoveMessage(int discussionId, int messageId)
         {
             var dm = Loader.GetDiscussionManager();
@@ -49,6 +50,7 @@ namespace UI.WebApp.Controllers
             return new JsonResult {Data = new {result = "success"}};
         }
 
+        [Authorize(Roles = "Write Forum")]
         public JsonResult SendMessage(int discussionId, string message)
         {
             var dm = Loader.GetDiscussionManager();

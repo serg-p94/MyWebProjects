@@ -47,12 +47,9 @@ namespace UI.WebApp.Controllers
                 if (result == UserValidationResult.Success)
                 {
                     var user = um.Users.Single(u => u.Login == login);
-                    var userInfo = new UserInfo {Id = user.Id, Login = user.Login};
-                    userInfo.PermissionIds.AddRange(user.Permissions.Select(p => p.Id));
-                    var userData = new JavaScriptSerializer().Serialize(userInfo);
                     var authTicket = new FormsAuthenticationTicket(version: 1, name: user.Id.ToString(),
                         issueDate: DateTime.Now, expiration: DateTime.MaxValue,
-                        isPersistent: remember == "on", userData: userData);
+                        isPersistent: remember == "on", userData: user.Id.ToString());
                     var encTicket = FormsAuthentication.Encrypt(authTicket);
                     var authCookie = new HttpCookie(FormsAuthentication.FormsCookieName, encTicket);
                     if (authTicket.IsPersistent)

@@ -110,7 +110,6 @@
     <Compile Include="Helpers\Converter.cs" />
     <Compile Include="Models\Users\AccessDeniedViewModel.cs" />
     <Compile Include="Models\Users\DetailsViewModel.cs" />
-    <Compile Include="Models\Users\UserInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

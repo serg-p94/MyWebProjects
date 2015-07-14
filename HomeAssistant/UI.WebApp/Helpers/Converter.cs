@@ -12,7 +12,7 @@ namespace UI.WebApp.Helpers
             return new
             {
                 Id = msg.Id,
-                Author = new UserInfo
+                Author = new
                 {
                     Id = msg.Author.Id,
                     Login = msg.Author.Login,
