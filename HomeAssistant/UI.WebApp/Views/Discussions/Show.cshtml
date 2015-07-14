@@ -9,47 +9,61 @@
 
 <h1 class="text-center page-header">@Model.Title</h1>
 
-<table id="messages-table" class="table table-striped text-center">
-    <tr>
-        <td><b>Id</b></td>
-        <td><b>Author</b></td>
-        <td><b>Body</b></td>
-        <td><b>Date</b></td>
-        <td></td>
-    </tr>
-
-    @foreach (var msg in Model.Messages)
-    {
-        <tr>
-            <td class="msg-id">@msg.Id</td>
-            <td>@msg.Author.Login</td>
-            <td>@msg.Body</td>
-            <td>@msg.Date</td>
-            <td><span class="clickable glyphicon glyphicon-remove" onclick="removeMessage(@Model.Id, $(this).parentsUntil('tr').parent(), '@Url.Action("RemoveMessage")')"></span></td>
-        </tr>
-    }
-</table>
+<div id="msg-container"></div>
 
 <script type="text/javascript">
+    $(function() {
+        viewAllMessages();
+        $('#msg-area').keydown(function(event) {
+            var enterKey = 13;
+            if (event.which == enterKey) {
+                $('#btn-send').click();
+            }
+        });
+    });
+
+    function viewAllMessages() {
+        var options = {
+            url: '@Url.Action("GetAllMessages")',
+            data: { discussionId: @Model.Id },
+            success: function(data) {
+                data.forEach(viewMessage);
+            }
+        };
+        $.ajax(options);
+    }
+
     function viewMessage(msg) {
-        var msgTable = $('#messages-table');
-        var row = $(document.createElement('tr'));
-        row.append($(document.createElement('td')).addClass('msg-id').append(msg.Id));
-        row.append($(document.createElement('td')).append(msg.Author.Login));
-        row.append($(document.createElement('td')).append(msg.Body));
-        row.append($(document.createElement('td')).append(msg.Date));
-        row.append($(document.createElement('td')).append(
-            $(document.createElement('span'))
-                .addClass('glyphicon')
-                .addClass('glyphicon-remove')
-                .addClass('clickable')
-                .click(function () {
-                    removeMessage(@Model.Id, $(this).parentsUntil('tr').parent(), '@Url.Action("RemoveMessage")');
-                }
-            )
+        var msgContainer = $('#msg-container');
+        var msgDiv = $(document.createElement('div')).addClass('msg-div');
+        msgDiv.append($(document.createElement('div')).addClass('msg-id').addClass('hidden').append(msg.Id));
+        msgDiv.append($(document.createElement('div'))
+            .addClass('msg-user').append($(document.createElement('div'))
+                .addClass('text-center')
+                .addClass('text-muted')
+                .append(msg.Author.Login)
             )
         );
-        msgTable.append(row);
+        msgDiv.append($(document.createElement('div'))
+            .addClass('msg-date')
+            .append($(document.createElement('span'))
+                .addClass('clickable')
+                .addClass('glyphicon')
+                .addClass('glyphicon-remove')
+                .addClass('pull-right')
+                .click(function() {
+                    removeMessage(@Model.Id, $(this).parentsUntil('.msg-div').parent(), '@Url.Action("RemoveMessage")');
+                })
+            )
+            .append($(document.createElement('div'))
+                .addClass('text-center text-muted')
+                .append(msg.Date)
+            )
+        );
+        msgDiv.append($(document.createElement('div')).addClass('msg-body').append($(document.createElement('div'))
+            .append(msg.Body)));
+
+        msgContainer.append(msgDiv);
     }
 
     function sendMessage(discussionId, msg, url) {
@@ -96,8 +110,5 @@
 
 <div class="form-horizontal">
     @Html.TextArea("message", new {@class = "form-control", rows = 3, id = "msg-area"})
-    <button class="btn btn-info clickable" onclick="sendMessage(@Model.Id, $('#msg-area').val(), '@Url.Action("SendMessage")')" style="margin-top: 10px">Send</button>
+    <button id="btn-send" class="btn btn-info clickable" onclick="sendMessage(@Model.Id, $('#msg-area').val(), '@Url.Action("SendMessage")')" style="margin-top: 10px">Send</button>
 </div>
-
-
-<button onclick="getMessages(@Model.Id, '@Url.Action("GetAllMessages")')"></button>

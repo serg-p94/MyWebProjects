@@ -38,7 +38,7 @@ namespace UI.WebApp.Controllers
             var discussion = dm.Discussions.Single(d => d.Id == discussionId);
             var converter = new Converter();
             var data = discussion.Messages.Select(msg => converter.GetDataObject(msg));
-            return new JsonResult {Data = data};
+            return new JsonResult {Data = data, JsonRequestBehavior = JsonRequestBehavior.AllowGet};
         }
 
         public JsonResult RemoveMessage(int discussionId, int messageId)

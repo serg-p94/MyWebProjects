@@ -1,0 +1,39 @@
+﻿#msg-area {
+    margin-top: 10px;
+}
+
+#msg-container {
+    border: solid gainsboro;
+    height: 300px;
+    overflow: auto;
+}
+
+.msg-div {
+    height: 50px;
+}
+
+.msg-user {
+    height: 100%;
+    width: 50px;
+    float: left;
+    background-color: aquamarine; 
+}
+
+.msg-date {
+    height: 100%;
+    width: 100px;
+    float: right;
+    background-color: burlywood;
+}
+
+.msg-body {
+    height: 100%;
+    background-color: bisque;
+    margin-left: 50px;
+    margin-right: 100px;
+}
+
+.msg-body>div {
+    margin-left: 10px;
+    margin-right: 10px;
+}
