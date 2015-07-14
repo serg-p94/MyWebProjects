@@ -88,8 +88,19 @@ namespace UI.WebApp.Controllers
         public ActionResult LogOut()
         {
             FormsAuthentication.SignOut();
-            HttpContext.Cache.Remove("UserName");
             return RedirectToAction("Index", "Home");
+        }
+
+        public ActionResult AccessDenied(string returnUrl)
+        {
+            ViewBag.MenuItem = MenuItem.User;
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("LogIn");
+            }
+            var url = string.Format("{0}{1}{2}:{3}{4}", Request.Url.Scheme, Uri.SchemeDelimiter, Request.Url.Host,
+                Request.Url.Port, returnUrl);
+            return View(new AccessDeniedViewModel {Url = url});
         }
 
         public JsonResult SetUserPermission(int userId, int permissionId, bool value)

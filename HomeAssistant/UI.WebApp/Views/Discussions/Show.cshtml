@@ -41,11 +41,12 @@
             .addClass('msg-user').append($(document.createElement('div'))
                 .addClass('text-center')
                 .addClass('text-muted')
-                .append(msg.Author.Login)
+                .append(msg.Author.Login).addClass('small')
             )
         );
         msgDiv.append($(document.createElement('div'))
             .addClass('msg-date')
+            .addClass('small')
             .append($(document.createElement('span'))
                 .addClass('clickable')
                 .addClass('glyphicon')

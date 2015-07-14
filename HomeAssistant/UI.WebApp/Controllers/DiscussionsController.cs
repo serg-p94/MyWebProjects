@@ -1,12 +1,9 @@
 ﻿using System;
-using System.CodeDom.Compiler;
-using System.Collections.Generic;
-using System.Web.Mvc;
 using System.Linq;
+using System.Web.Mvc;
 using BL.Discussions;
-using UI.WebApp.Helpers;
 using Bootstrapper;
-using UI.WebApp.Models.Users;
+using UI.WebApp.Helpers;
 
 namespace UI.WebApp.Controllers
 {

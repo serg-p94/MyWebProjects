@@ -1,0 +1,10 @@
+﻿@model UI.WebApp.Models.Users.AccessDeniedViewModel
+
+@{
+    ViewBag.Title = "Access Denied";
+    Layout = "../Shared/Layout.cshtml";
+}
+
+<h2 class="alert alert-danger text-center">Access Denied</h2>
+
+<div class="text-center">You have not enough permissions to access @(Model.Url).</div>

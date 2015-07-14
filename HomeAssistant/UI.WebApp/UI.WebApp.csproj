@@ -108,6 +108,7 @@
     <Compile Include="Helpers\ICustomPrincipal.cs" />
     <Compile Include="Helpers\MenuItem.cs" />
     <Compile Include="Helpers\Converter.cs" />
+    <Compile Include="Models\Users\AccessDeniedViewModel.cs" />
     <Compile Include="Models\Users\DetailsViewModel.cs" />
     <Compile Include="Models\Users\UserInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -131,6 +132,7 @@
     <Content Include="Views\Discussions\Show.cshtml" />
     <Content Include="Views\Users\ShowAll.cshtml" />
     <Content Include="Views\Users\Details.cshtml" />
+    <None Include="Views\Users\AccessDenied.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
