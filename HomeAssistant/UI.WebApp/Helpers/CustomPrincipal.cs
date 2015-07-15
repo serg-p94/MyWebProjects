@@ -33,5 +33,8 @@ namespace UI.WebApp.Helpers
         public int Id { get; set; }
         public string Login { get; set; }
         public HashSet<Permission> Permissions { get; protected set; }
+
+        public bool IsMale { get; set; }
+        public string Avatar { get; set; }
     }
 }

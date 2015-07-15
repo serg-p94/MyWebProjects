@@ -29,6 +29,15 @@ namespace UI.WebApp.Controllers
             return View(discussion);
         }
 
+        public ActionResult AddDiscussion(string name)
+        {
+            if (name != string.Empty)
+            {
+                Loader.GetDiscussionManager().CreateDiscussion(name);
+            }
+            return RedirectToAction("ShowAll");
+        }
+
         public JsonResult GetAllMessages(int discussionId)
         {
             var dm = Loader.GetDiscussionManager();

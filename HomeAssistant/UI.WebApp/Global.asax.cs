@@ -26,14 +26,28 @@ namespace UI.WebApp
                 HttpContext.Current.User = new CustomPrincipal(new GenericIdentity(string.Empty));
                 return;
             }
-            var authTicket = FormsAuthentication.Decrypt(authCookie.Value);
-            var userId = int.Parse(authTicket.Name);
-            var um = Loader.GetUserManager();
-            var user = um.Users.Single(u => u.Id == userId);
-            var principal = new CustomPrincipal(authTicket.Name) {Id = user.Id, Login = user.Login};
-            principal.Permissions.UnionWith(user.Permissions);
+            try
+            {
+                var authTicket = FormsAuthentication.Decrypt(authCookie.Value);
+                var userId = int.Parse(authTicket.Name);
+                var um = Loader.GetUserManager();
+                var user = um.Users.Single(u => u.Id == userId);
+                var principal = new CustomPrincipal(authTicket.Name)
+                {
+                    Id = user.Id,
+                    Login = user.Login,
+                    IsMale = user.IsMale,
+                    Avatar = user.Avatar
+                };
+                principal.Permissions.UnionWith(user.Permissions);
 
-            HttpContext.Current.User = principal;
+                HttpContext.Current.User = principal;
+            }
+            catch
+            {
+                HttpContext.Current.User = new CustomPrincipal(new GenericIdentity(string.Empty));
+            }
+
         }
     }
 }

@@ -80,6 +80,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Pictures\Avatars\user_female.png" />
+    <Content Include="Pictures\Avatars\user_male.png" />
     <Content Include="Global.asax" />
     <Content Include="Static\bootstrap\css\bootstrap-theme.css" />
     <Content Include="Static\bootstrap\css\bootstrap-theme.min.css" />

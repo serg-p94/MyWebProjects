@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Text;
 
 namespace BL.Users
@@ -10,9 +11,24 @@ namespace BL.Users
         public string Password { get; set; }
         public virtual HashSet<Permission> Permissions { get; protected set; }
 
+        private bool _isMale = true;
+
+        public bool IsMale
+        {
+            get { return _isMale; }
+            set
+            {
+                _isMale = value;
+                Avatar = _isMale ? "user_male.png" : "user_female.png";
+            }
+        }
+
+        public string Avatar { get; set; }
+
         public User()
         {
             Permissions = new HashSet<Permission>();
+            IsMale = true;
         }
 
         public bool HasPermission(Permission permission)
@@ -40,7 +56,7 @@ namespace BL.Users
             {
                 sb.Append(p + " ");
             }
-            return string.Format("{0}: {1} - {2}   Permissions: {3}", Id, Login, Password, sb.ToString());
+            return string.Format("{0}: {1} - {2}   Permissions: {3}", Id, Login, Password, sb);
         }
     }
 }

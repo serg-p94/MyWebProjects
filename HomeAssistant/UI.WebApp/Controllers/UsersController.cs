@@ -22,7 +22,9 @@ namespace UI.WebApp.Controllers
             else
             {
                 var um = Loader.GetUserManager();
-                return RedirectToAction("RegistrationResult", new { result = um.Register(new User { Login = login, Password = password }) });
+                var user = new User { Login = login, Password = password };
+                user.Permissions.Add(Loader.GetPermissionManager()[UserRole.ChangePermissions]);
+                return RedirectToAction("RegistrationResult", new { result = um.Register(user) });
             }
         }
 

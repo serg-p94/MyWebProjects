@@ -40,7 +40,7 @@
         var msgDiv = $(document.createElement('div')).addClass('msg-div');
         msgDiv.append($(document.createElement('div')).addClass('msg-id').addClass('hidden').append(msg.Id));
         msgDiv.append($(document.createElement('div'))
-            .addClass('msg-user')
+            .addClass('msg-user').append('<img src="@(Url.Content("~/Pictures/Avatars/"+User.Avatar))" class="img-rounded" width="100%" height="100%"/>')
         );
 
         var msgDate = $(document.createElement('div'))
@@ -55,18 +55,18 @@
                 .click(function() {
                     removeMessage(@Model.Id, $(this).parentsUntil('.msg-div').parent(),
                         '@Url.Action("RemoveMessage")');
-                }));
-        }
-        msgDate.append($(document.createElement('div'))
-            .addClass('text-center text-muted')
-            .append(msg.Date));
+        }));
+    }
+    msgDate.append($(document.createElement('div'))
+        .addClass('text-center text-muted')
+        .append(msg.Date));
 
-        msgDiv.append(msgDate);
-        msgDiv.append($(document.createElement('div')).addClass('msg-body').append($(document.createElement('div'))
-            .append($(document.createElement('b')).addClass('text-info').append(msg.Author.Login).append('<br/>'))
-            .append(msg.Body)));
+    msgDiv.append(msgDate);
+    msgDiv.append($(document.createElement('div')).addClass('msg-body').append($(document.createElement('div'))
+        .append($(document.createElement('b')).addClass('text-info').append(msg.Author.Login).append('<br/>'))
+        .append(msg.Body)));
 
-        msgContainer.append(msgDiv);
+    msgContainer.append(msgDiv);
     }
 
     function sendMessage(discussionId, msg, url) {
