@@ -1,4 +1,5 @@
-﻿@model UI.WebApp.Models.Users.DetailsViewModel
+﻿@using UI.WebApp.Helpers
+@model UI.WebApp.Models.Users.DetailsViewModel
 
 @{
     ViewBag.Title = "User Details";
@@ -33,12 +34,23 @@
     {
         <div class="checkbox row">
             <label>
-                @Html.CheckBox(name: string.Format("permission_{0}", permission.Id),
-                    isChecked: Model.User.Permissions.Contains(permission),
-                    htmlAttributes: new
-                    {
-                        onclick = "setUserPermission(" + Model.User.Id + ", " + permission.Id + ", this.checked, '" + @Url.Action("SetUserPermission") + "')"
-                    })
+                @if (User.IsInRole(UserRole.ChangePermissions))
+                {
+                    @Html.CheckBox(name: string.Format("permission_{0}", permission.Id),
+                        isChecked: Model.User.Permissions.Contains(permission),
+                        htmlAttributes: new
+                        {
+                            onclick = "setUserPermission(" + Model.User.Id + ", " + permission.Id + ", this.checked, '" + @Url.Action("SetUserPermission") + "')"
+                        })
+                }
+                else if (Model.User.Permissions.Contains(permission))
+                {
+                    <span class="glyphicon glyphicon-plus"></span>
+                }
+                else
+                {
+                    <span class="glyphicon glyphicon-minus"></span>
+                }
                 @(permission.Name)
             </label>
         </div>

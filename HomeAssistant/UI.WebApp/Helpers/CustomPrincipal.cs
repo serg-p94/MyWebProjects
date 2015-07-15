@@ -25,7 +25,7 @@ namespace UI.WebApp.Helpers
         public bool IsInRole(string role)
         {
             var pm = Loader.GetPermissionManager();
-            return pm.PermissionExists(role) && Permissions.Contains(pm[role]);
+            return Permissions.Contains(pm[role]);
         }
 
         public IIdentity Identity { get; private set; }

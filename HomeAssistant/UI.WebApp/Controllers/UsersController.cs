@@ -1,12 +1,11 @@
 ﻿using System;
-using BL.Users;
-using Bootstrapper;
-using System.Web.Mvc;
-using System.Web.Security;
-using UI.WebApp.Helpers;
 using System.Linq;
 using System.Web;
-using System.Web.Script.Serialization;
+using System.Web.Mvc;
+using System.Web.Security;
+using BL.Users;
+using Bootstrapper;
+using UI.WebApp.Helpers;
 using UI.WebApp.Models.Users;
 
 namespace UI.WebApp.Controllers
@@ -22,7 +21,7 @@ namespace UI.WebApp.Controllers
             }
             else
             {
-                var um = Bootstrapper.Loader.GetUserManager();
+                var um = Loader.GetUserManager();
                 return RedirectToAction("RegistrationResult", new { result = um.Register(new User { Login = login, Password = password }) });
             }
         }
@@ -62,6 +61,7 @@ namespace UI.WebApp.Controllers
             }
         }
 
+        [Authorize(Roles = UserRole.BrowseUsers)]
         public ActionResult ShowAll()
         {
             ViewBag.MenuItem = MenuItem.User;
@@ -69,8 +69,13 @@ namespace UI.WebApp.Controllers
             return View(um.Users);
         }
 
+        [Authorize]
         public ActionResult Details(int? id)
         {
+            if (!id.HasValue || id != User.Id && !User.IsInRole(UserRole.BrowseUsers))
+            {
+                return RedirectToAction("AccessDenied", new {ReturnUrl = Request.Url.AbsolutePath});
+            }
             ViewBag.MenuItem = MenuItem.User;
             var um = Loader.GetUserManager();
             var pm = Loader.GetPermissionManager();
@@ -82,6 +87,7 @@ namespace UI.WebApp.Controllers
             return View(viewModel);
         }
 
+        [Authorize]
         public ActionResult LogOut()
         {
             FormsAuthentication.SignOut();
@@ -100,6 +106,7 @@ namespace UI.WebApp.Controllers
             return View(new AccessDeniedViewModel {Url = url});
         }
 
+        [Authorize(Roles = UserRole.ChangePermissions)]
         public JsonResult SetUserPermission(int userId, int permissionId, bool value)
         {
             var um = Loader.GetUserManager();

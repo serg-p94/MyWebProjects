@@ -39,9 +39,12 @@
                             <li>@Html.ActionLink("Log In", "LogIn", "Users")</li>
                             <li>@Html.ActionLink("Registration", "Registration", "Users")</li>
                         }
-                        <li>@Html.ActionLink("Show All", "ShowAll", "Users")</li>
-                        @if (User != null && User.Identity.IsAuthenticated)
+                        @if (User.Identity.IsAuthenticated)
                         {
+                            if (User.IsInRole(UserRole.BrowseUsers))
+                            {
+                                <li>@Html.ActionLink("Show All", "ShowAll", "Users")</li>
+                            }
                             <li>@Html.ActionLink(linkText: "Details", actionName: "Details", controllerName: "Users", routeValues: new { id = User.Identity.Name }, htmlAttributes: null)</li>
                             <li>@Html.ActionLink(linkText: "Log Out", actionName: "LogOut", controllerName: "Users")</li>
                         }

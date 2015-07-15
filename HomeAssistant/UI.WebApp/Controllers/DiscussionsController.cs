@@ -7,7 +7,7 @@ using UI.WebApp.Helpers;
 
 namespace UI.WebApp.Controllers
 {
-    [Authorize(Roles = "Read Forum")]
+    [Authorize(Roles = UserRole.ReadForum)]
     public class DiscussionsController : BaseController
     {
         public ActionResult ShowAll()
@@ -38,7 +38,7 @@ namespace UI.WebApp.Controllers
             return new JsonResult {Data = data, JsonRequestBehavior = JsonRequestBehavior.AllowGet};
         }
 
-        [Authorize(Roles = "Write Forum")]
+        [Authorize(Roles = UserRole.WriteForum)]
         public JsonResult RemoveMessage(int discussionId, int messageId)
         {
             var dm = Loader.GetDiscussionManager();
@@ -50,7 +50,7 @@ namespace UI.WebApp.Controllers
             return new JsonResult {Data = new {result = "success"}};
         }
 
-        [Authorize(Roles = "Write Forum")]
+        [Authorize(Roles = UserRole.WriteForum)]
         public JsonResult SendMessage(int discussionId, string message)
         {
             var dm = Loader.GetDiscussionManager();

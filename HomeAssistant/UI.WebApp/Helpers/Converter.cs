@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using BL.Discussions;
-using UI.WebApp.Models.Users;
 
 namespace UI.WebApp.Helpers
 {

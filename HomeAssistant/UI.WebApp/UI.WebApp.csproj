@@ -108,6 +108,7 @@
     <Compile Include="Helpers\ICustomPrincipal.cs" />
     <Compile Include="Helpers\MenuItem.cs" />
     <Compile Include="Helpers\Converter.cs" />
+    <Compile Include="Helpers\UserRole.cs" />
     <Compile Include="Models\Users\AccessDeniedViewModel.cs" />
     <Compile Include="Models\Users\DetailsViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
