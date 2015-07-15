@@ -44,6 +44,10 @@ namespace UI.WebApp.Controllers
             var dm = Loader.GetDiscussionManager();
             var discussion = dm.Discussions.Single(d => d.Id == discussionId);
             var msg = discussion.Messages.Single(m => m.Id == messageId);
+            if (msg.Author.Id != User.Id)
+            {
+                return new JsonResult {Data = new {result = "Access denied!"}};
+            }
             discussion.Messages.Remove(msg);
             dm.Update();
 

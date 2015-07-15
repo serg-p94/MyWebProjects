@@ -1,6 +1,4 @@
-﻿@using BL.Discussions
-
-@model Discussion
+﻿@model BL.Discussions.Discussion
 
 @{
     ViewBag.Title = string.Format("Discussion '{0}'", Model.Title);
@@ -26,6 +24,7 @@
         var options = {
             url: '@Url.Action("GetAllMessages")',
             data: { discussionId: @Model.Id },
+            cache: false,
             success: function(data) {
                 data.forEach(viewMessage);
             }
@@ -47,20 +46,16 @@
         var msgDate = $(document.createElement('div'))
             .addClass('msg-date')
             .addClass('small');
-        @if (User.IsInRole("Write Forum"))
-        {
-            <text>
+        if (@(User.IsInRole("Write Forum").ToString().ToLower()) && msg.Author.Id == @(User.Id)) {
             msgDate.append($(document.createElement('span'))
                 .addClass('clickable')
                 .addClass('glyphicon')
                 .addClass('glyphicon-remove')
                 .addClass('pull-right')
                 .click(function() {
-                    removeMessage(@Model.Id,  $(this).parentsUntil('.msg-div').parent(),
+                    removeMessage(@Model.Id, $(this).parentsUntil('.msg-div').parent(),
                         '@Url.Action("RemoveMessage")');
-                })
-            );
-            </text>
+                }));
         }
         msgDate.append($(document.createElement('div'))
             .addClass('text-center text-muted')
