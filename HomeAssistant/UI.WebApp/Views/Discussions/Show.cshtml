@@ -42,11 +42,6 @@
         msgDiv.append($(document.createElement('div')).addClass('msg-id').addClass('hidden').append(msg.Id));
         msgDiv.append($(document.createElement('div'))
             .addClass('msg-user')
-            .append($(document.createElement('div'))
-                .addClass('text-center')
-                .addClass('text-muted')
-                .append(msg.Author.Login).addClass('small')
-            )
         );
 
         var msgDate = $(document.createElement('div'))
@@ -73,6 +68,7 @@
 
         msgDiv.append(msgDate);
         msgDiv.append($(document.createElement('div')).addClass('msg-body').append($(document.createElement('div'))
+            .append($(document.createElement('b')).addClass('text-info').append(msg.Author.Login).append('<br/>'))
             .append(msg.Body)));
 
         msgContainer.append(msgDiv);
