@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -12,20 +13,30 @@ namespace UI.WebApp.Controllers
 {
     public class UsersController : BaseController
     {
-        public ActionResult Registration(string login, string password)
+        public ActionResult Registration(string login, string password, bool? isMale)
         {
             ViewBag.MenuItem = MenuItem.User;
-            if (login == null && password == null)
+            if (login == null || password == null)
             {
                 return View(new User());
             }
-            else
+
+            var um = Loader.GetUserManager();
+            var user = new User { Login = login, Password = password, IsMale = !isMale.HasValue || isMale.Value };
+            user.Permissions.Add(Loader.GetPermissionManager()[UserRole.ChangePermissions]);
+            var result = um.Register(user);
+            if (result == UserRegistrationResult.Success)
             {
-                var um = Loader.GetUserManager();
-                var user = new User { Login = login, Password = password };
-                user.Permissions.Add(Loader.GetPermissionManager()[UserRole.ChangePermissions]);
-                return RedirectToAction("RegistrationResult", new { result = um.Register(user) });
+                var avatar = Request.Files["avatar"];
+                var fileName = string.Format("{0}{1}", login, Path.GetExtension(avatar.FileName));
+                var path = string.Format("{0}{1}", FoldersPathes.AvatarsFolder, fileName);
+                path = Server.MapPath(path);
+                avatar.SaveAs(path);
+                user.Avatar = fileName;
+                um.Update();
             }
+
+            return RedirectToAction("RegistrationResult", new {result = result});
         }
 
         public ActionResult RegistrationResult(UserRegistrationResult result)

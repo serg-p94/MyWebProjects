@@ -5,7 +5,7 @@
     ViewBag.Title = "User Registration";
 }
 
-@using (Html.BeginForm("Registration", "Users", FormMethod.Post, new { @class = "form-horizintal", @role = "form" }))
+@using (Html.BeginForm("Registration", "Users", FormMethod.Post, new { @class = "form-horizintal", role = "form", enctype = "multipart/form-data" }))
 {
     <div class="form-group row">
         <label class="col-xs-2 control-label">Login</label>
@@ -16,7 +16,23 @@
     <div class="form-group row">
         <label class="col-xs-2 control-label">Password</label>
         <div class="col-xs-10">
-            @Html.TextBox("password", Model.Password, new { @class = "form-control", placeholder = "Password", required = "" })
+            @Html.TextBox("password", Model.Password, new {@class = "form-control", placeholder = "Password", required = ""})
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-xs-2 control-label">Sex</label>
+        <div class="col-xs-10">
+            @Html.DropDownList("isMale", new[]
+            {
+                new SelectListItem {Selected = true, Value = "true", Text = "Male"},
+                new SelectListItem {Value = "false", Text = "Female"}
+            }, new {@class = "form-control"})
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-xs-2 control-label">Avatar</label>
+        <div class="col-xs-10">
+            <input name="avatar" type="file" class="form-control" />
         </div>
     </div>
     <button class="btn btn-default pull-right" type="submit">Register</button>
