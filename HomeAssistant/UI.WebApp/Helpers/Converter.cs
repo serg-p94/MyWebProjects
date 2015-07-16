@@ -15,7 +15,9 @@ namespace UI.WebApp.Helpers
                 {
                     Id = msg.Author.Id,
                     Login = msg.Author.Login,
-                    PermissionIds = new List<int>(msg.Author.Permissions.Select(p => p.Id))
+                    PermissionIds = new List<int>(msg.Author.Permissions.Select(p => p.Id)),
+                    Avatar = msg.Author.Avatar,
+                    IsMale = msg.Author.IsMale
                 },
                 Body = msg.Body,
                 Date = msg.Date.ToString()

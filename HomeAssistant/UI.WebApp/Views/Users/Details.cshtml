@@ -10,22 +10,34 @@
 
 <h1 class="page-header text-center">@Model.User.Login</h1>
 
-<table class="table table-bordered">
-    <tr>
-        <td width="30%"><b>Id:</b></td>
-        <td width="70%">@Model.User.Id</td>
-    </tr>
+<div class="row">
+    <div class="col-xs-6">
+        <img class="img-rounded" src="@(Url.Content(FoldersPathes.AvatarsFolder + Model.User.Avatar))" style="max-width: 300px; width: 100%;" />
+    </div>
+    <div class="col-xs-6" style="min-width: 200px;">
+        <table class="table table-bordered">
+            <tr>
+                <td width="30%"><b>Id</b></td>
+                <td width="70%">@Model.User.Id</td>
+            </tr>
 
-    <tr>
-        <td width="30%"><b>Login:</b></td>
-        <td width="70%">@Model.User.Login</td>
-    </tr>
+            <tr>
+                <td width="30%"><b>Login</b></td>
+                <td width="70%">@Model.User.Login</td>
+            </tr>
 
-    <tr>
-        <td width="30%"><b>Password:</b></td>
-        <td width="70%">@Model.User.Password</td>
-    </tr>
-</table>
+            <tr>
+                <td width="30%"><b>Password</b></td>
+                <td width="70%">@Model.User.Password</td>
+            </tr>
+
+            <tr>
+                <td width="30%"><b>Sex</b></td>
+                <td width="70%">@(Model.User.IsMale ? "Male" : "Female")</td>
+            </tr>
+        </table>
+    </div>
+</div>
 
 <h3 class="text-center text-underlined">Permissions</h3>
 

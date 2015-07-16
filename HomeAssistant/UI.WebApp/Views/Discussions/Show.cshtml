@@ -39,8 +39,14 @@
         var msgContainer = $('#msg-container');
         var msgDiv = $(document.createElement('div')).addClass('msg-div');
         msgDiv.append($(document.createElement('div')).addClass('msg-id').addClass('hidden').append(msg.Id));
+        var avatarPath = '@(Url.Content("~/Pictures/Avatars/"))' + msg.Author.Avatar;
         msgDiv.append($(document.createElement('div'))
-            .addClass('msg-user').append('<img src="@(Url.Content("~/Pictures/Avatars/"+User.Avatar))" class="img-rounded" width="100%" height="100%"/>')
+            .addClass('msg-user')
+            .append($(document.createElement('img'))
+                .attr('src', avatarPath)
+                .attr('width','100%')
+                .addClass('img-rounded')
+            )
         );
 
         var msgDate = $(document.createElement('div'))
