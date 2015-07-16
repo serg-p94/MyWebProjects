@@ -15,10 +15,34 @@
 
     <link rel="stylesheet" href="~/Static/styles.css"/>
     <link rel="stylesheet" href="~/Static/Discussions.css" />
+    <link rel="stylesheet" href="~/Static/Layout.css" />
 </head>
 <body>
     <div class="container">
         <div>
+            @if (User.Identity.IsAuthenticated)
+            {
+                <div id="user-avatar-menu" class="pull-right">
+                    <div class="dropdown">
+                        <div id="user-avatar-div" class="container-center dropdown-toggle clickable" data-toggle="dropdown">
+                            <img class="img-rounded" src="@(Url.Content(FoldersPathes.AvatarsFolder + User.Avatar))" height="100%" />
+                            <div>
+                                <b>@(User.Login)</b>
+                            </div>
+                        </div>
+
+                        <ul class="dropdown-menu">
+                            @if (User.IsInRole(UserRole.BrowseUsers))
+                            {
+                                <li>@Html.ActionLink("Show All", "ShowAll", "Users")</li>
+                            }
+                            <li>@Html.ActionLink(linkText: "Details", actionName: "Details", controllerName: "Users", routeValues: new { id = User.Identity.Name }, htmlAttributes: null)</li>
+                            <li>@Html.ActionLink(linkText: "Log Out", actionName: "LogOut", controllerName: "Users")</li>
+                        </ul>
+                    </div>
+                </div>
+            }
+
             <ul class="nav nav-tabs pull-right">
                 <li class="@Html.Raw(ViewBag.MenuItem == MenuItem.Home ? "active" : null)">
                     @Html.ActionLink("Home", "Index", "Home")
@@ -31,29 +55,25 @@
                     </li>
                 }
 
-                <li class="dropdown @Html.Raw(ViewBag.MenuItem == MenuItem.User ? "active" : null)">
-                    <a class="dropdown-toggle" href="#" data-toggle="dropdown">@(User.Identity.IsAuthenticated ?  User.Login : "User")<b class="caret"></b></a>
-                    <ul class="dropdown-menu">
-                        @if(!User.Identity.IsAuthenticated)
-                        {
+                @if (!User.Identity.IsAuthenticated)
+                {
+                    <li class="dropdown @Html.Raw(ViewBag.MenuItem == MenuItem.User ? "active" : null)">
+                        <a class="dropdown-toggle" href="#" data-toggle="dropdown">
+                            User
+                            <span class="caret"></span>
+                        </a>
+
+                        <ul class="dropdown-menu">
                             <li>@Html.ActionLink("Log In", "LogIn", "Users")</li>
                             <li>@Html.ActionLink("Registration", "Registration", "Users")</li>
-                        }
-                        @if (User.Identity.IsAuthenticated)
-                        {
-                            if (User.IsInRole(UserRole.BrowseUsers))
-                            {
-                                <li>@Html.ActionLink("Show All", "ShowAll", "Users")</li>
-                            }
-                            <li>@Html.ActionLink(linkText: "Details", actionName: "Details", controllerName: "Users", routeValues: new { id = User.Identity.Name }, htmlAttributes: null)</li>
-                            <li>@Html.ActionLink(linkText: "Log Out", actionName: "LogOut", controllerName: "Users")</li>
-                        }
-                    </ul>
-                </li>
+                        </ul>
+                    </li>
+                }
+
             </ul>
 
-            <h3 class="text-muted clickable" onclick="document.location.href='@Url.Action("Index", "Home")'">Home Assistant</h3>
-            <br />
+            <h3 class="text-muted clickable" onclick="document.location.href = '@Url.Action("Index", "Home")'">Home Assistant</h3>
+            <br/>
         </div>
         <div>
             @RenderBody()

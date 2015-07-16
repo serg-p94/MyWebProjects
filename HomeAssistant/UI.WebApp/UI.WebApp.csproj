@@ -92,6 +92,7 @@
     <Content Include="Static\bootstrap\js\bootstrap.min.js" />
     <Content Include="Static\Discussions.css" />
     <Content Include="Static\jquery-2.1.4.js" />
+    <Content Include="Static\Layout.css" />
     <Content Include="Static\styles.css" />
     <Content Include="Static\Users.js" />
     <Content Include="Web.config" />
@@ -110,6 +111,7 @@
     <Compile Include="Helpers\ICustomPrincipal.cs" />
     <Compile Include="Helpers\MenuItem.cs" />
     <Compile Include="Helpers\Converter.cs" />
+    <Compile Include="Helpers\FoldersPathes.cs" />
     <Compile Include="Helpers\UserRole.cs" />
     <Compile Include="Models\Users\AccessDeniedViewModel.cs" />
     <Compile Include="Models\Users\DetailsViewModel.cs" />

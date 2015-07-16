@@ -1,0 +1,28 @@
+﻿.container-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#user-avatar-div {
+    height: 40px;
+    border: 1px solid #dddddd;
+    border-radius: 10px;
+}
+#user-avatar-div:hover,
+#user-avatar-div:active {
+  text-decoration: none;
+  background-color: #eeeeee;
+}
+
+#user-avatar-div>div {
+    margin-right: 10px;
+}
+#user-avatar-div>img {
+    margin-left: 10px;
+}
+
+#user-avatar-menu {
+    margin-left: 20px;
+    margin-right: 50px;
+}
