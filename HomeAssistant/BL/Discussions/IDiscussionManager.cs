@@ -6,6 +6,7 @@ namespace BL.Discussions
     {
         void CreateDiscussion(string tilte);
         IQueryable<Discussion> Discussions { get; }
+        void Remove(Discussion discussion);
         void Update();
     }
 }

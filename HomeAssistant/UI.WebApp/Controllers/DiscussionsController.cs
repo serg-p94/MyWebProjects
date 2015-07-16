@@ -29,11 +29,26 @@ namespace UI.WebApp.Controllers
             return View(discussion);
         }
 
-        public ActionResult AddDiscussion(string name)
+        public ActionResult AddDiscussion(string title)
         {
-            if (name != string.Empty)
+            if (title == null)
             {
-                Loader.GetDiscussionManager().CreateDiscussion(name);
+                return View();
+            }
+            Loader.GetDiscussionManager().CreateDiscussion(title);
+            return RedirectToAction("ShowAll");
+        }
+
+        public ActionResult RemoveDiscussion(int? id)
+        {
+            if (id.HasValue)
+            {
+                var dm = Loader.GetDiscussionManager();
+                var discussion = dm.Discussions.SingleOrDefault(d => d.Id == id.Value);
+                if (discussion != null)
+                {
+                    dm.Remove(discussion);
+                }
             }
             return RedirectToAction("ShowAll");
         }

@@ -1,0 +1,13 @@
+﻿@{
+    ViewBag.Title = "Add Discussion";
+    Layout = "../Shared/Layout.cshtml";
+}
+
+@using (Html.BeginForm("AddDiscussion", "Discussions", FormMethod.Post, new {@class = "form-horizintal", @role = "form"}))
+{
+    <div class="form-group">
+        <label class="control-label">Title</label>
+        @Html.TextBox("title", "", new {@class = "form-control", placeholder = "Title", required = ""})
+    </div>
+    <button class="btn btn-default" type="submit">Add</button>
+}

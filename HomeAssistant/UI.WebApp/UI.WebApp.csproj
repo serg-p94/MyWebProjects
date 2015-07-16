@@ -136,6 +136,7 @@
     <Content Include="Views\Discussions\Show.cshtml" />
     <Content Include="Views\Users\ShowAll.cshtml" />
     <Content Include="Views\Users\Details.cshtml" />
+    <None Include="Views\Discussions\AddDiscussion.cshtml" />
     <None Include="Views\Users\AccessDenied.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
