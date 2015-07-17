@@ -40,7 +40,7 @@ namespace UI.WebApp.Controllers
             return RedirectToAction("ShowAll");
         }
 
-        [Authorize(Roles = UserRole.WriteForum)]
+        [Authorize(Roles = UserRole.RemoveDiscussions)]
         public JsonResult RemoveDiscussion(int? id)
         {
             if (id.HasValue)

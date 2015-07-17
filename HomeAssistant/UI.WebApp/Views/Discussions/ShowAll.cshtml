@@ -1,4 +1,5 @@
 ﻿@using BL.Discussions
+@using UI.WebApp.Helpers
 
 @model IQueryable<Discussion>
 
@@ -26,7 +27,10 @@
 </table>
 
 <ul id="table-context-menu" class="dropdown-menu" style="position: absolute; display: none;">
-    <li><a href="#" id="menu-item-remove">Remove</a></li>
+    @if (User.IsInRole(UserRole.RemoveDiscussions))
+    {
+        <li><a href="#" id="menu-item-remove">Remove</a></li>
+    }
     <li><a href="#">-Empty-</a></li>
 </ul>
 
@@ -59,8 +63,11 @@
             contextMenu.css({ 'display': 'block', 'left': e.pageX, 'top': e.pageY });
             var target = $(e.currentTarget);
 
-            contextMenu.find('#menu-item-remove').off();
-            contextMenu.find('#menu-item-remove').on('click', function () { removeDiscussion(target); });
+            var removeMenuItem = contextMenu.find('#menu-item-remove');
+            if (removeMenuItem.length > 0) {
+                contextMenu.find('#menu-item-remove').off();
+                contextMenu.find('#menu-item-remove').on('click', function() { removeDiscussion(target); });
+            }
 
             return false;
         });
