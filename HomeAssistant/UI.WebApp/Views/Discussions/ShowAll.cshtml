@@ -14,16 +14,55 @@
         <td><b>Id</b></td>
         <td><b>Title</b></td>
         <td><b>Messages</b></td>
-        <td></td>
     </tr>
     @foreach (var discussion in Model)
     {
         <tr>
-            <td>@discussion.Id</td>
-            <td><a href="@Url.Action("Show", new { id = discussion.Id })">@discussion.Title</a></td>
+            <td class="discussion-id">@discussion.Id</td>
+            <td><a href="@Url.Action("Show", new {id = discussion.Id})">@discussion.Title</a></td>
             <td>@discussion.Messages.Count</td>
-            <td><span class="glyphicon glyphicon-remove text-danger clickable" onclick="document.location.href='@(Url.Action("RemoveDiscussion", new{id=discussion.Id}))';$(this).parentsUntil('td').parent().remove();"></span></td>
         </tr>
     }
 </table>
 
+<ul id="table-context-menu" class="dropdown-menu" style="position: absolute; display: none;">
+    <li><a href="#" id="menu-item-remove">Remove</a></li>
+    <li><a href="#">-Empty-</a></li>
+</ul>
+
+<script type="text/javascript">
+    function removeDiscussion(targetRow) {
+        var id = targetRow.find('.discussion-id').text();
+        var url = '@(Url.Action("RemoveDiscussion"))';
+        var options = {
+            url: url,
+            data: { id: id },
+            success: function(data) {
+                if (data.result == "success") {
+                    targetRow.remove();
+                }
+            }
+        };
+        $.ajax(options);
+    }
+
+    $(function() {
+        var contextMenu = $('#table-context-menu');
+
+        $(window).click(function() {
+            if (contextMenu.css('display') != 'none') {
+                contextMenu.hide();
+            }
+        });
+
+        $('body').on('contextmenu', 'table tr', function(e) {
+            contextMenu.css({ 'display': 'block', 'left': e.pageX, 'top': e.pageY });
+            var target = $(e.currentTarget);
+
+            contextMenu.find('#menu-item-remove').off();
+            contextMenu.find('#menu-item-remove').on('click', function () { removeDiscussion(target); });
+
+            return false;
+        });
+    });
+</script>

@@ -29,6 +29,7 @@ namespace UI.WebApp.Controllers
             return View(discussion);
         }
 
+        [Authorize(Roles = UserRole.WriteForum)]
         public ActionResult AddDiscussion(string title)
         {
             if (title == null)
@@ -39,7 +40,8 @@ namespace UI.WebApp.Controllers
             return RedirectToAction("ShowAll");
         }
 
-        public ActionResult RemoveDiscussion(int? id)
+        [Authorize(Roles = UserRole.WriteForum)]
+        public JsonResult RemoveDiscussion(int? id)
         {
             if (id.HasValue)
             {
@@ -50,7 +52,7 @@ namespace UI.WebApp.Controllers
                     dm.Remove(discussion);
                 }
             }
-            return RedirectToAction("ShowAll");
+            return new JsonResult {Data = new {result = "success"}, JsonRequestBehavior = JsonRequestBehavior.AllowGet};
         }
 
         public JsonResult GetAllMessages(int discussionId)
