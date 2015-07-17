@@ -1,5 +1,5 @@
-﻿using BL.Users;
-using System;
+﻿using System;
+using BL.Users;
 
 namespace BL.Discussions
 {

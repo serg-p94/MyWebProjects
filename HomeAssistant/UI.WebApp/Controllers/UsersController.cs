@@ -27,10 +27,7 @@ namespace UI.WebApp.Controllers
             if (result == UserRegistrationResult.Success)
             {
                 var avatar = Request.Files["avatar"];
-                if (avatar != null)
-                {
-                    new AvatarsHelper(um).ChangeAvatar(user, avatar);
-                }
+                new AvatarsHelper(um).ChangeAvatar(user, avatar);
             }
 
             return RedirectToAction("RegistrationResult", new {result = result});
@@ -143,15 +140,12 @@ namespace UI.WebApp.Controllers
         public ActionResult ChangeAvatar()
         {
             var avatar = Request.Files["avatar"];
-            if (avatar == null)
+            if (avatar != null)
             {
-                return new JsonResult {Data = new {result = "error", details = "File wasn't received."}};
+                var um = Loader.GetUserManager();
+                var user = um.Users.Single(u => u.Id == User.Id);
+                new AvatarsHelper(um).ChangeAvatar(user, avatar);
             }
-
-            var um = Loader.GetUserManager();
-            var user = um.Users.Single(u => u.Id == User.Id);
-            new AvatarsHelper(um).ChangeAvatar(user, avatar);
-
             return RedirectToAction("Details", new {id = User.Id});
         }
     }

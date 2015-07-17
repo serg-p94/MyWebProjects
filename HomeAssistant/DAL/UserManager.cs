@@ -1,7 +1,7 @@
-﻿using BL.Users;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
+using BL.Users;
 
 namespace DAL
 {

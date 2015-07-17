@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Text;
 
 namespace BL.Users
@@ -11,17 +10,7 @@ namespace BL.Users
         public string Password { get; set; }
         public virtual HashSet<Permission> Permissions { get; protected set; }
 
-        private bool _isMale = true;
-
-        public bool IsMale
-        {
-            get { return _isMale; }
-            set
-            {
-                _isMale = value;
-                Avatar = _isMale ? "user_male.png" : "user_female.png";
-            }
-        }
+        public bool IsMale { get; set; }
 
         public string Avatar { get; set; }
 

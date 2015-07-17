@@ -1,7 +1,7 @@
-﻿using BL.Discussions;
-using BL.Users;
+﻿using System.Collections.Generic;
 using System.Data.Entity;
-using System.Collections.Generic;
+using BL.Discussions;
+using BL.Users;
 
 namespace DAL
 {
@@ -11,7 +11,7 @@ namespace DAL
 
         protected MainDbContext(string nameOrConnectionString) : base(nameOrConnectionString)
         {
-            //Database.SetInitializer<MainDbContext>(new DropCreateDatabaseAlways<MainDbContext>());
+            Database.SetInitializer(new DropCreateDatabaseAlways<MainDbContext>());
         }
 
         public static MainDbContext GetInstance(string nameOrConnectionString)

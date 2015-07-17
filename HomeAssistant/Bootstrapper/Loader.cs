@@ -2,7 +2,6 @@
 using BL.Users;
 using DAL;
 using Microsoft.Practices.Unity;
-using System.Configuration;
 
 namespace Bootstrapper
 {

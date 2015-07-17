@@ -1,8 +1,8 @@
-﻿using BL.Discussions;
+﻿using System;
+using System.Linq;
+using BL.Discussions;
 using BL.Users;
 using Bootstrapper;
-using System;
-using System.Linq;
 
 namespace UI.ConsoleApp
 {
@@ -10,8 +10,8 @@ namespace UI.ConsoleApp
     {
         static void Main(string[] args)
         {
-            var um = Bootstrapper.Loader.GetUserManager();
-            var pm = Bootstrapper.Loader.GetPermissionManager();
+            var um = Loader.GetUserManager();
+            var pm = Loader.GetPermissionManager();
 
             um.Register(new User { Login = "Admin", Password = "Admin" });
 
@@ -19,7 +19,7 @@ namespace UI.ConsoleApp
             um["Admin"].AddPermission(pm["Write Forum"]);
             um.Update();
 
-            var dm = Bootstrapper.Loader.GetDiscussionManager();
+            var dm = Loader.GetDiscussionManager();
             dm.CreateDiscussion("First discussion");
             dm.CreateDiscussion("Second discussion");
             var disc = dm.Discussions.First();

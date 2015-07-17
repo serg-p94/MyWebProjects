@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+
 namespace BL.Users
 {
     public interface IPermissionManager
