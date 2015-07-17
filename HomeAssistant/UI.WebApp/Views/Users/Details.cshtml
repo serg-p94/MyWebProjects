@@ -12,7 +12,8 @@
 
 <div class="row">
     <div class="col-xs-6">
-        <img class="img-rounded" src="@(Url.Content(FoldersPathes.AvatarsFolder + Model.User.Avatar))" style="max-width: 300px; width: 100%;" />
+        <img class="img-rounded clickable" src="@(Url.Content(FoldersPathes.AvatarsFolder + Model.User.Avatar))"
+             style="max-width: 300px; width: 100%;" data-toggle="modal" data-target="#change-avatar-modal" />
     </div>
     <div class="col-xs-6" style="min-width: 200px;">
         <table class="table table-bordered">
@@ -67,4 +68,38 @@
             </label>
         </div>
     }
+</div>
+
+
+<!--Change Avatar Modal-->
+<div class="modal fade" id="change-avatar-modal" tabindex="-1" role="dialog" aria-labelledby="change-avatar-modal-label" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="change-avatar-modal-label">Change Avatar</h4>
+            </div>
+
+            @using (Html.BeginForm("ChangeAvatar", "Users", FormMethod.Post, new {role = "form", enctype = "multipart/form-data"}))
+            {
+                <div class="modal-body">
+                    <h4 id="change-avatar-modal-result"></h4>
+
+                    <div class="form-horizontal">
+                        <div class="form-group row">
+                            <label class="col-xs-2 control-label">Avatar</label>
+                            <div class="col-xs-10">
+                                <input name="avatar" type="file" class="form-control"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Change</button>
+                </div>
+            }
+        </div>
+    </div>
 </div>

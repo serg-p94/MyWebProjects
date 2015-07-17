@@ -105,6 +105,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\AvatarsHelper.cs" />
     <Compile Include="Helpers\BaseController.cs" />
     <Compile Include="Helpers\BaseWebViewPage.cs" />
     <Compile Include="Helpers\CustomPrincipal.cs" />

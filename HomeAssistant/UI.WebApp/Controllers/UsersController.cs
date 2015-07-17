@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -28,12 +27,10 @@ namespace UI.WebApp.Controllers
             if (result == UserRegistrationResult.Success)
             {
                 var avatar = Request.Files["avatar"];
-                var fileName = string.Format("{0}{1}", login, Path.GetExtension(avatar.FileName));
-                var path = string.Format("{0}{1}", FoldersPathes.AvatarsFolder, fileName);
-                path = Server.MapPath(path);
-                avatar.SaveAs(path);
-                user.Avatar = fileName;
-                um.Update();
+                if (avatar != null)
+                {
+                    new AvatarsHelper(um).ChangeAvatar(user, avatar);
+                }
             }
 
             return RedirectToAction("RegistrationResult", new {result = result});
@@ -140,6 +137,22 @@ namespace UI.WebApp.Controllers
             }
             um.Update();
             return new JsonResult { Data = new { result = "sucess" }};
+        }
+
+        [Authorize]
+        public ActionResult ChangeAvatar()
+        {
+            var avatar = Request.Files["avatar"];
+            if (avatar == null)
+            {
+                return new JsonResult {Data = new {result = "error", details = "File wasn't received."}};
+            }
+
+            var um = Loader.GetUserManager();
+            var user = um.Users.Single(u => u.Id == User.Id);
+            new AvatarsHelper(um).ChangeAvatar(user, avatar);
+
+            return RedirectToAction("Details", new {id = User.Id});
         }
     }
 }
