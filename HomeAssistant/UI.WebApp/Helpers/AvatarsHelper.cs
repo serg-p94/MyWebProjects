@@ -9,7 +9,7 @@ namespace UI.WebApp.Helpers
         private readonly IUserManager _userManager;
 
         private const string UserAvatarMale = "user_male.png";
-        private const string UserAvatarFemale = "userfe_male.png";
+        private const string UserAvatarFemale = "user_female.png";
 
         public AvatarsHelper(IUserManager userManager)
         {
@@ -51,7 +51,7 @@ namespace UI.WebApp.Helpers
             else
             {
                 var srcPath = HttpContext.Current.Server.MapPath(FoldersPathes.AvatarsFolder + sourceFileName);
-                File.Copy(srcPath, dstPath);
+                File.Copy(srcPath, dstPath, true);
             }
 
             return fileName;

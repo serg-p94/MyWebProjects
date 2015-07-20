@@ -10,20 +10,22 @@
 <div id="msg-container"></div>
 
 <script type="text/javascript">
+    lastMsgId = 0;
+
     $(function() {
-        viewAllMessages();
         $('#msg-area').keydown(function(event) {
             var enterKey = 13;
             if (event.which == enterKey) {
                 $('#btn-send').click();
             }
         });
+        setInterval(viewAllMessages, 1000);
     });
 
     function viewAllMessages() {
         var options = {
             url: '@Url.Action("GetAllMessages")',
-            data: { discussionId: @Model.Id },
+            data: { discussionId: @Model.Id, lastMsgId: lastMsgId },
             cache: false,
             success: function(data) {
                 data.forEach(viewMessage);
@@ -44,7 +46,7 @@
             .addClass('msg-user')
             .append($(document.createElement('img'))
                 .attr('src', avatarPath)
-                .attr('width','100%')
+                .attr('width', '100%')
                 .addClass('img-rounded')
             )
         );
@@ -61,18 +63,22 @@
                 .click(function() {
                     removeMessage(@Model.Id, $(this).parentsUntil('.msg-div').parent(),
                         '@Url.Action("RemoveMessage")');
-        }));
-    }
-    msgDate.append($(document.createElement('div'))
-        .addClass('text-center text-muted')
-        .append(msg.Date));
+                }));
+        }
+        msgDate.append($(document.createElement('div'))
+            .addClass('text-center text-muted')
+            .append(msg.Date));
 
-    msgDiv.append(msgDate);
-    msgDiv.append($(document.createElement('div')).addClass('msg-body').append($(document.createElement('div'))
-        .append($(document.createElement('b')).addClass('text-info').append(msg.Author.Login).append('<br/>'))
-        .append(msg.Body)));
+        msgDiv.append(msgDate);
+        msgDiv.append($(document.createElement('div')).addClass('msg-body').append($(document.createElement('div'))
+            .append($(document.createElement('b')).addClass('text-info').append(msg.Author.Login).append('<br/>'))
+            .append(msg.Body)));
 
-    msgContainer.append(msgDiv);
+        msgContainer.append(msgDiv);
+
+        if (lastMsgId < msg.Id) {
+            lastMsgId = msg.Id;
+        }
     }
 
     function sendMessage(discussionId, msg, url) {

@@ -55,12 +55,14 @@ namespace UI.WebApp.Controllers
             return new JsonResult {Data = new {result = "success"}, JsonRequestBehavior = JsonRequestBehavior.AllowGet};
         }
 
-        public JsonResult GetAllMessages(int discussionId)
+        public JsonResult GetAllMessages(int discussionId, int? lastMsgId)
         {
             var dm = Loader.GetDiscussionManager();
             var discussion = dm.Discussions.Single(d => d.Id == discussionId);
             var converter = new Converter();
-            var data = discussion.Messages.Select(msg => converter.GetDataObject(msg));
+            var data =
+                discussion.Messages.Where(msg => !lastMsgId.HasValue || msg.Id > lastMsgId.Value)
+                    .Select(msg => converter.GetDataObject(msg));
             return new JsonResult {Data = data, JsonRequestBehavior = JsonRequestBehavior.AllowGet};
         }
 

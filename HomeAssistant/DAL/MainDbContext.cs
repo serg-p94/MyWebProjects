@@ -7,7 +7,7 @@ namespace DAL
 {
     public class MainDbContext : DbContext
     {
-        private static Dictionary<string, MainDbContext> _instances = new Dictionary<string, MainDbContext>();
+        private static readonly Dictionary<string, MainDbContext> Instances = new Dictionary<string, MainDbContext>();
 
         protected MainDbContext(string nameOrConnectionString) : base(nameOrConnectionString)
         {
@@ -16,13 +16,13 @@ namespace DAL
 
         public static MainDbContext GetInstance(string nameOrConnectionString)
         {
-            lock (_instances)
+            lock (Instances)
             {
-                if (_instances.ContainsKey(nameOrConnectionString))
+                if (Instances.ContainsKey(nameOrConnectionString))
                 {
-                    return _instances[nameOrConnectionString];
+                    return Instances[nameOrConnectionString];
                 }
-                return _instances[nameOrConnectionString] = new MainDbContext(nameOrConnectionString);
+                return Instances[nameOrConnectionString] = new MainDbContext(nameOrConnectionString);
             }
         }
 
