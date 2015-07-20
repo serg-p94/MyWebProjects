@@ -12,17 +12,17 @@ namespace UI.WebApp.Controllers
 {
     public class UsersController : BaseController
     {
-        public ActionResult Registration(string login, string password, bool? isMale)
+        public ActionResult Registration(User user)
         {
             ViewBag.MenuItem = MenuItem.User;
-            if (login == null || password == null)
+            if (user.Login == null || user.Password == null)
             {
-                return View(new User());
+                return View(user);
             }
 
-            var um = Loader.GetUserManager();
-            var user = new User { Login = login, Password = password, IsMale = !isMale.HasValue || isMale.Value };
             user.Permissions.Add(Loader.GetPermissionManager()[UserRole.ChangePermissions]);
+
+            var um = Loader.GetUserManager();
             var result = um.Register(user);
             if (result == UserRegistrationResult.Success)
             {
