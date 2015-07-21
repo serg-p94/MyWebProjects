@@ -113,9 +113,12 @@
     <Compile Include="Helpers\MenuItem.cs" />
     <Compile Include="Helpers\Converter.cs" />
     <Compile Include="Helpers\FoldersPathes.cs" />
+    <Compile Include="Helpers\MessagesHelper.cs" />
     <Compile Include="Helpers\UserRole.cs" />
     <Compile Include="Models\Users\AccessDeniedViewModel.cs" />
     <Compile Include="Models\Users\DetailsViewModel.cs" />
+    <Compile Include="Models\Users\LogInResultViewModel.cs" />
+    <Compile Include="Models\Users\UserRegistrationResultViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -125,7 +128,6 @@
       <SubType>ASPXCodeBehind</SubType>
     </Content>
     <Content Include="Views\Users\Registration.cshtml" />
-    <Content Include="Views\Users\RegistrationResult.cshtml" />
     <Content Include="Views\Users\LogIn.cshtml" />
     <Content Include="Static\bootstrap\config.json" />
     <Content Include="Static\bootstrap\fonts\glyphicons-halflings-regular.eot" />

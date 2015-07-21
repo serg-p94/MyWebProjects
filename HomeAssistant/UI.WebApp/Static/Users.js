@@ -25,23 +25,6 @@ function EmailOnChange(emailDiv) {
     } else {
         markInput(emailDiv, ValidateEmail(email));
     }
-
-    /*$(parentDiv)
-        .removeClass('has-error')
-        .removeClass('has-success')
-        .children('span').remove();
-    if (str == "") {
-        return;
-    }
-    if (!ValidateEmail(str)) {
-        parentDiv.addClass('has-error')
-            .append('<span class="glyphicon glyphicon-remove form-control-feedback"></span>');
-        $('#btn-submit').attr('disabled', 'disabled');
-    } else {
-        parentDiv.addClass('has-success')
-            .append('<span class="glyphicon glyphicon-ok form-control-feedback"></span>');
-        $('#btn-submit').removeAttr('disabled');
-    }*/
 }
 
 function checkLoginIsEmpty(loginDiv, url) {

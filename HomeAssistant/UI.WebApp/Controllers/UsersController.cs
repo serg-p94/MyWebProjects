@@ -17,26 +17,27 @@ namespace UI.WebApp.Controllers
             ViewBag.MenuItem = MenuItem.User;
             if (user.Login == null || user.Password == null)
             {
-                return View(user);
+                return View(new UserRegistrationResultViewModel());
             }
 
-            user.Permissions.Add(Loader.GetPermissionManager()[UserRole.ChangePermissions]);
-
-            var um = Loader.GetUserManager();
-            var result = um.Register(user);
-            if (result == UserRegistrationResult.Success)
+            try
             {
-                var avatar = Request.Files["avatar"];
-                new AvatarsHelper(um).ChangeAvatar(user, avatar);
+                user.Permissions.Add(Loader.GetPermissionManager()[UserRole.ChangePermissions]);
+
+                var um = Loader.GetUserManager();
+                var result = um.Register(user);
+                if (result == UserRegistrationResult.Success)
+                {
+                    var avatar = Request.Files["avatar"];
+                    new AvatarsHelper(um).ChangeAvatar(user, avatar);
+                }
+                return View(new UserRegistrationResultViewModel {HasResult = true, Result = result});
             }
-
-            return RedirectToAction("RegistrationResult", new {result = result});
-        }
-
-        public ActionResult RegistrationResult(UserRegistrationResult result)
-        {
-            ViewBag.MenuItem = MenuItem.User;
-            return View(result);
+            catch
+            {
+                return
+                    View(new UserRegistrationResultViewModel {HasResult = true, Result = UserRegistrationResult.Error});
+            }
         }
 
         public ActionResult LogIn(string login, string password, string remember)
@@ -44,28 +45,26 @@ namespace UI.WebApp.Controllers
             ViewBag.MenuItem = MenuItem.User;
             if (login == null && password == null)
             {
-                return View(new User());
+                return View(new LogInResultViewModel());
             }
-            else
+            var um = Loader.GetUserManager();
+            var result = um.Validate(login, password);
+            if (result == UserValidationResult.Success)
             {
-                var um = Loader.GetUserManager();
-                var result = um.Validate(login, password);
-                if (result == UserValidationResult.Success)
+                var user = um.Users.Single(u => u.Login == login);
+                var authTicket = new FormsAuthenticationTicket(version: 1, name: user.Id.ToString(),
+                    issueDate: DateTime.Now, expiration: DateTime.MaxValue,
+                    isPersistent: remember == "on", userData: user.Id.ToString());
+                var encTicket = FormsAuthentication.Encrypt(authTicket);
+                var authCookie = new HttpCookie(FormsAuthentication.FormsCookieName, encTicket);
+                if (authTicket.IsPersistent)
                 {
-                    var user = um.Users.Single(u => u.Login == login);
-                    var authTicket = new FormsAuthenticationTicket(version: 1, name: user.Id.ToString(),
-                        issueDate: DateTime.Now, expiration: DateTime.MaxValue,
-                        isPersistent: remember == "on", userData: user.Id.ToString());
-                    var encTicket = FormsAuthentication.Encrypt(authTicket);
-                    var authCookie = new HttpCookie(FormsAuthentication.FormsCookieName, encTicket);
-                    if (authTicket.IsPersistent)
-                    {
-                        authCookie.Expires = authTicket.Expiration;
-                    }
-                    Response.Cookies.Add(authCookie);
+                    authCookie.Expires = authTicket.Expiration;
                 }
+                Response.Cookies.Add(authCookie);
                 return RedirectToAction("Index", "Home");
             }
+            return View(new LogInResultViewModel {HasResult = true, Result = result});
         }
 
         [Authorize(Roles = UserRole.BrowseUsers)]

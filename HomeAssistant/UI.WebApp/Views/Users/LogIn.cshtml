@@ -1,25 +1,49 @@
-﻿@model BL.Users.User
+﻿@using BL.Users
+@using UI.WebApp.Helpers
+@model UI.WebApp.Models.Users.LogInResultViewModel
 
 @{
     Layout = "../Shared/Layout.cshtml";
     ViewBag.Title = "Log In";
 }
 
-@using (Html.BeginForm("LogIn", "Users", FormMethod.Post, new { @class = "form-horizintal", @role = "form" }))
+@if (Model.HasResult && Model.Result == UserValidationResult.Success)
 {
-    <div class="form-group">
-        <label class="control-label">Login</label>
-        @Html.TextBox("login", Model.Login, new { @class = "form-control", placeholder = "Login", required = "" })
-    </div>
-    <div class="form-group">
-        <label class="control-label">Password</label>
-        @Html.TextBox("password", Model.Password, new {@class = "form-control", type="password", placeholder = "Password", required = ""})
-    </div>
-    <div class="checkbox">
-        <label>
-            <input type="checkbox" name="remember"/>
-            Remember
-        </label>
-    </div>
-    <button class="btn btn-default pull-right" type="submit">Log In</button>
+    @MessagesHelper.SuccessMessage("Successfully logged in!")
+}
+else
+{
+    if (Model.HasResult)
+    {
+        switch (Model.Result)
+        {
+            case UserValidationResult.NotFound:
+                @MessagesHelper.WarningMessage("User not found!")
+                break;
+            case UserValidationResult.WrongPassword:
+                @MessagesHelper.WarningMessage("Password is wrong!")
+                break;
+            default:
+                @MessagesHelper.ErrorMessage("Error occured!")
+                break;
+        }
+    }
+    using (Html.BeginForm("LogIn", "Users", FormMethod.Post, new {@class = "form-horizintal", @role = "form"}))
+    {
+        <div class="form-group">
+            <label class="control-label">Login</label>
+            @Html.TextBox("login", string.Empty, new {@class = "form-control", placeholder = "Login", required = ""})
+        </div>
+        <div class="form-group">
+            <label class="control-label">Password</label>
+            @Html.TextBox("password", string.Empty, new {@class = "form-control", type = "password", placeholder = "Password", required = ""})
+        </div>
+        <div class="checkbox">
+            <label>
+                <input type="checkbox" name="remember"/>
+                Remember
+            </label>
+        </div>
+        <button class="btn btn-default pull-right" type="submit">Log In</button>
+    }
 }
