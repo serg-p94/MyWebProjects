@@ -17,10 +17,16 @@ function ValidateEmail(email) {
     return email != '' && re.test(email);
 }
 
-function EmailOnChange() {
-    var str = this.value;
-    var parentDiv = $(this).parent();
-    $(parentDiv)
+function EmailOnChange(emailDiv) {
+    var email = $(emailDiv).find('input').val();
+
+    if (email == "") {
+        markInput(emailDiv);
+    } else {
+        markInput(emailDiv, ValidateEmail(email));
+    }
+
+    /*$(parentDiv)
         .removeClass('has-error')
         .removeClass('has-success')
         .children('span').remove();
@@ -35,12 +41,16 @@ function EmailOnChange() {
         parentDiv.addClass('has-success')
             .append('<span class="glyphicon glyphicon-ok form-control-feedback"></span>');
         $('#btn-submit').removeAttr('disabled');
-    }
+    }*/
 }
 
 function checkLoginIsEmpty(loginDiv, url) {
     var input = $(loginDiv).find('input');
     var login = input.val();
+    if (login == "") {
+        markInput(loginDiv);
+        return;
+    }
 
     var options = {
         url: url,
@@ -58,18 +68,19 @@ function markInput(inputDiv, valid) {
         .removeClass('has-success')
         .children('span').remove();
 
-    if (valid) {
-        $(inputDiv).addClass('has-success')
-            .append('<span class="glyphicon glyphicon-ok form-control-feedback"></span>');
+    if (typeof valid != "undefined") {
+        if (valid) {
+            $(inputDiv).addClass('has-success')
+                .append('<span class="glyphicon glyphicon-ok form-control-feedback"></span>');
+        } else {
+            $(inputDiv).addClass('has-error')
+                .append('<span class="glyphicon glyphicon-remove form-control-feedback"></span>');
+        }
+    }
+
+    if ($('.validate.has-error').length == 0) {
         $('#btn-submit').removeAttr('disabled');
     } else {
-        $(inputDiv).addClass('has-error')
-            .append('<span class="glyphicon glyphicon-remove form-control-feedback"></span>');
         $('#btn-submit').attr('disabled', 'disabled');
     }
 }
-
-$(function() {
-    $('input.email').change(EmailOnChange);
-    //$('.login-div').change(checkLoginIsEmpty);
-})

@@ -11,7 +11,7 @@
 {
     <div class="form-group has-feedback">
         <label class="col-xs-2 control-label">Login</label>
-        <div class="col-xs-10 login-div">
+        <div class="col-xs-10 login-div validate">
             @Html.TextBox("login", "", new { @class = "form-control", placeholder = "Login", required = "", onchange = "checkLoginIsEmpty('.login-div','" + Url.Action("Exists") + "')" })
         </div>
     </div>
@@ -43,10 +43,10 @@
 
     <div class="form-group has-feedback">
         <label class="col-xs-2 control-label">Email</label>
-        <div class="col-xs-10">
-            @Html.TextBox("email", "", new {@class = "email form-control", type="email", placeholder = "Email", required = ""})
+        <div class="col-xs-10 email-div validate">
+            @Html.TextBox("email", "", new { @class = "form-control", type = "email", placeholder = "Email", required = "", onchange = "EmailOnChange('.email-div')" })
         </div>
     </div>
     
-    <button id="btn-submit" class="btn btn-default pull-right" type="submit" disabled="disabled">Register</button>
+    <button id="btn-submit" class="btn btn-default pull-right" type="submit">Register</button>
 }
