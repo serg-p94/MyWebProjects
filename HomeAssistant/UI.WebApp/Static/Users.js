@@ -38,6 +38,38 @@ function EmailOnChange() {
     }
 }
 
+function checkLoginIsEmpty(loginDiv, url) {
+    var input = $(loginDiv).find('input');
+    var login = input.val();
+
+    var options = {
+        url: url,
+        data: { login: login },
+        method: 'POST',
+        success: function (data) {
+            markInput(loginDiv, !data.result);
+        }
+    };
+    $.ajax(options);
+}
+
+function markInput(inputDiv, valid) {
+    $(inputDiv).removeClass('has-error')
+        .removeClass('has-success')
+        .children('span').remove();
+
+    if (valid) {
+        $(inputDiv).addClass('has-success')
+            .append('<span class="glyphicon glyphicon-ok form-control-feedback"></span>');
+        $('#btn-submit').removeAttr('disabled');
+    } else {
+        $(inputDiv).addClass('has-error')
+            .append('<span class="glyphicon glyphicon-remove form-control-feedback"></span>');
+        $('#btn-submit').attr('disabled', 'disabled');
+    }
+}
+
 $(function() {
     $('input.email').change(EmailOnChange);
+    //$('.login-div').change(checkLoginIsEmpty);
 })

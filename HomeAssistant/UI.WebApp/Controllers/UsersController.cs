@@ -148,5 +148,10 @@ namespace UI.WebApp.Controllers
             }
             return RedirectToAction("Details", new {id = User.Id});
         }
+
+        public JsonResult Exists(string login)
+        {
+            return new JsonResult {Data = new {result = Loader.GetUserManager().Exists(login)}};
+        }
     }
 }

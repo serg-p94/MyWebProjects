@@ -9,13 +9,13 @@
 
 @using (Html.BeginForm("Registration", "Users", FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data" }))
 {
-    <div class="form-group">
+    <div class="form-group has-feedback">
         <label class="col-xs-2 control-label">Login</label>
-        <div class="col-xs-10">
-            @Html.TextBox("login", "", new {@class = "form-control", placeholder = "Login", required = ""})
+        <div class="col-xs-10 login-div">
+            @Html.TextBox("login", "", new { @class = "form-control", placeholder = "Login", required = "", onchange = "checkLoginIsEmpty('.login-div','" + Url.Action("Exists") + "')" })
         </div>
     </div>
-    
+
     <div class="form-group">
         <label class="col-xs-2 control-label">Password</label>
         <div class="col-xs-10">
