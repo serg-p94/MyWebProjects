@@ -1,6 +1,7 @@
 ﻿using System.Web.Mvc;
+using UI.WebApp.Helpers.Users;
 
-namespace UI.WebApp.Helpers
+namespace UI.WebApp.Helpers.Global
 {
     public class BaseController : Controller
     {

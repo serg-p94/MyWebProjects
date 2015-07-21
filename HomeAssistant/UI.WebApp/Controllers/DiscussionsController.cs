@@ -4,6 +4,8 @@ using System.Web.Mvc;
 using BL.Discussions;
 using Bootstrapper;
 using UI.WebApp.Helpers;
+using UI.WebApp.Helpers.Global;
+using UI.WebApp.Helpers.Users;
 
 namespace UI.WebApp.Controllers
 {

@@ -105,16 +105,16 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Helpers\AvatarsHelper.cs" />
-    <Compile Include="Helpers\BaseController.cs" />
-    <Compile Include="Helpers\BaseWebViewPage.cs" />
-    <Compile Include="Helpers\CustomPrincipal.cs" />
-    <Compile Include="Helpers\ICustomPrincipal.cs" />
-    <Compile Include="Helpers\MenuItem.cs" />
-    <Compile Include="Helpers\Converter.cs" />
-    <Compile Include="Helpers\FoldersPathes.cs" />
-    <Compile Include="Helpers\MessagesHelper.cs" />
-    <Compile Include="Helpers\UserRole.cs" />
+    <Compile Include="Helpers\Users\AvatarsHelper.cs" />
+    <Compile Include="Helpers\Global\BaseController.cs" />
+    <Compile Include="Helpers\Global\BaseWebViewPage.cs" />
+    <Compile Include="Helpers\Users\CustomPrincipal.cs" />
+    <Compile Include="Helpers\Users\ICustomPrincipal.cs" />
+    <Compile Include="Helpers\Global\MenuItem.cs" />
+    <Compile Include="Helpers\Global\Converter.cs" />
+    <Compile Include="Helpers\Global\FoldersPathes.cs" />
+    <Compile Include="Helpers\Global\MessagesHelper.cs" />
+    <Compile Include="Helpers\Users\UserRole.cs" />
     <Compile Include="Models\Users\AccessDeniedViewModel.cs" />
     <Compile Include="Models\Users\DetailsViewModel.cs" />
     <Compile Include="Models\Users\LogInResultViewModel.cs" />

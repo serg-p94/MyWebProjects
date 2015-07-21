@@ -6,6 +6,8 @@ using System.Web.Security;
 using BL.Users;
 using Bootstrapper;
 using UI.WebApp.Helpers;
+using UI.WebApp.Helpers.Global;
+using UI.WebApp.Helpers.Users;
 using UI.WebApp.Models.Users;
 
 namespace UI.WebApp.Controllers

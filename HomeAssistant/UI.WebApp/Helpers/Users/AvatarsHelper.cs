@@ -1,8 +1,9 @@
 ﻿using System.IO;
 using System.Web;
 using BL.Users;
+using UI.WebApp.Helpers.Global;
 
-namespace UI.WebApp.Helpers
+namespace UI.WebApp.Helpers.Users
 {
     public class AvatarsHelper
     {

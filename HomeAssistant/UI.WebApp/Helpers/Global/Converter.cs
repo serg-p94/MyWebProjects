@@ -2,7 +2,7 @@
 using System.Linq;
 using BL.Discussions;
 
-namespace UI.WebApp.Helpers
+namespace UI.WebApp.Helpers.Global
 {
     public class Converter
     {

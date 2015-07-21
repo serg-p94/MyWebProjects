@@ -1,4 +1,4 @@
-﻿namespace UI.WebApp.Helpers
+﻿namespace UI.WebApp.Helpers.Users
 {
     public static class UserRole
     {

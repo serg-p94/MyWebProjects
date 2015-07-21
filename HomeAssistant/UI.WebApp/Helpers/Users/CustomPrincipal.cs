@@ -3,7 +3,7 @@ using System.Security.Principal;
 using BL.Users;
 using Bootstrapper;
 
-namespace UI.WebApp.Helpers
+namespace UI.WebApp.Helpers.Users
 {
     public class CustomPrincipal : ICustomPrincipal
     {

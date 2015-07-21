@@ -1,6 +1,6 @@
 ﻿using System.Web;
 
-namespace UI.WebApp.Helpers
+namespace UI.WebApp.Helpers.Global
 {
     public static class MessagesHelper
     {
