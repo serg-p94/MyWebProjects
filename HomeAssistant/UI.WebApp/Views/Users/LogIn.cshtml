@@ -1,5 +1,4 @@
 ﻿@using BL.Users
-@using UI.WebApp.Helpers
 @using UI.WebApp.Helpers.Global
 @model UI.WebApp.Models.Users.LogInResultViewModel
 
@@ -7,6 +6,8 @@
     Layout = "../Shared/Layout.cshtml";
     ViewBag.Title = "Log In";
 }
+
+<script type="text/javascript" src="../../Static/Users.js"></script>
 
 @if (Model.HasResult && Model.Result == UserValidationResult.Success)
 {
@@ -45,6 +46,81 @@ else
                 Remember
             </label>
         </div>
-        <button class="btn btn-default pull-right" type="submit">Log In</button>
+
+        <div class="btn-group">
+            <button class="btn btn-default" type="submit">Log In</button>
+            <button class="btn btn-default" type="button" onclick="document.location.href='@Url.Action("Registration")'">Registration</button>
+            <button class="btn btn-default" type="button" data-toggle="modal" data-target="#recover-account-modal">Recover Account</button>
+        </div>
     }
 }
+
+<!--Password Recovery Modal-->
+<div class="modal fade" id="recover-account-modal" tabindex="-1" role="dialog" aria-labelledby="recover-account-modal-label" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="recover-account-modal-label">Account Recovery</h4>
+            </div>
+
+            <div class="modal-body">
+                <div class="form-horizontal">
+
+                    <h4 id="recover-account-modal-result" class="text-center alert" hidden="hidden"></h4>
+
+                    <div class="form-group has-feedback">
+                        <label class="col-xs-2 control-label">Email</label>
+                        <div class="col-xs-10 email-div validate">
+                            <input name="email" type="text" class="form-control" oninput="EmailOnChange('.email-div')"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary btn-submit" data-loading-text="Sending..."
+                        onclick="requestAccountInfo($('.email-div input').val());">Send</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    function requestAccountInfo(email) {
+        if (email == "") {
+            return;
+        }
+        var btn = $('#recover-account-modal .btn-submit');
+        btn.button('loading');
+        var options = {
+            url: '@Url.Action("AccountRecovery")',
+            method: 'POST',
+            data: { email: email },
+            success: function (data) {
+                var result = $('#recover-account-modal-result');
+                result.fadeOut(function() {
+                    result.empty();
+                    result.removeClass('alert-success').removeClass('alert-danger');
+                    switch (data.result) {
+                    case "success":
+                        result.addClass('alert-success')
+                            .append('Account info has been sent to your email');
+                        break;
+                    case "error":
+                        result.addClass('alert-danger')
+                            .append(data.msg);
+                        break;
+                    default:
+                        break;
+                    }
+                    result.fadeIn();
+                });
+            }
+        };
+        $.ajax(options).always(function () {
+            btn.button('reset');
+        });
+    }
+</script>

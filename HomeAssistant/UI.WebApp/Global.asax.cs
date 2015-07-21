@@ -6,7 +6,6 @@ using System.Web.Mvc;
 using System.Web.Routing;
 using System.Web.Security;
 using Bootstrapper;
-using UI.WebApp.Helpers;
 using UI.WebApp.Helpers.Users;
 
 namespace UI.WebApp

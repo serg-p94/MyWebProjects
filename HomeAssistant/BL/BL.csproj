@@ -42,6 +42,8 @@
     <Compile Include="Discussions\Discussion.cs" />
     <Compile Include="Discussions\IDiscussionManager.cs" />
     <Compile Include="Discussions\Message.cs" />
+    <Compile Include="Users\MailSender.cs" />
+    <Compile Include="Users\IMailSender.cs" />
     <Compile Include="Users\IPermissionManager.cs" />
     <Compile Include="Users\IUserManager.cs" />
     <Compile Include="Users\IUserModifier.cs" />

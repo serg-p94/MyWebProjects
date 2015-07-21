@@ -7,29 +7,37 @@ namespace Bootstrapper
 {
     public class Loader
     {
-        private static UnityContainer _container = new UnityContainer();
+        private static readonly UnityContainer Container = new UnityContainer();
 
         static Loader()
         {
-            _container.RegisterType<IUserManager, UserManager>(new ContainerControlledLifetimeManager());
-            _container.RegisterType<IPermissionManager, UserManager>(new ContainerControlledLifetimeManager());
+            Container.RegisterType<IUserManager, UserManager>(new ContainerControlledLifetimeManager());
+            Container.RegisterType<IPermissionManager, UserManager>(new ContainerControlledLifetimeManager());
 
-            _container.RegisterType<IDiscussionManager, DiscussionManager>();
+            Container.RegisterType<IDiscussionManager, DiscussionManager>();
+
+            Container.RegisterType<IMailSender, MailSender>();
         }
 
         public static IUserManager GetUserManager()
         {
-            return _container.Resolve<IUserManager>();
+            return Container.Resolve<IUserManager>();
         }
 
         public static IPermissionManager GetPermissionManager()
         {
-            return _container.Resolve<IPermissionManager>();
+            return Container.Resolve<IPermissionManager>();
         }
 
         public static IDiscussionManager GetDiscussionManager()
         {
-            return _container.Resolve<IDiscussionManager>();
+            return Container.Resolve<IDiscussionManager>();
+        }
+
+        public static IMailSender GetMailSender(string from, string password)
+        {
+            return Container.Resolve<IMailSender>(new ParameterOverride("from", from),
+                new ParameterOverride("password", password));
         }
     }
 }

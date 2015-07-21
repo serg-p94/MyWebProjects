@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Linq;
+using System.Text;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
 using BL.Users;
 using Bootstrapper;
-using UI.WebApp.Helpers;
 using UI.WebApp.Helpers.Global;
 using UI.WebApp.Helpers.Users;
 using UI.WebApp.Models.Users;
@@ -153,6 +153,31 @@ namespace UI.WebApp.Controllers
         public JsonResult Exists(string login)
         {
             return new JsonResult {Data = new {result = Loader.GetUserManager().Exists(login)}};
+        }
+
+        public JsonResult AccountRecovery(string email)
+        {
+            var um = Loader.GetUserManager();
+            var user = um.Users.SingleOrDefault(u => u.Email == email);
+            if (user == null)
+            {
+                return new JsonResult {Data = new {result = "error", msg = "User not found"}};
+            }
+
+            try
+            {
+                var mailSender = Loader.GetMailSender("serg.p94@gmail.com", "gh011235813");
+                var sb = new StringBuilder();
+                sb.AppendLine("Account Information");
+                sb.AppendLine("Login: " + user.Login);
+                sb.AppendLine("Password: " + user.Password);
+                mailSender.Send(email, "Account Recovery", sb.ToString());
+                return new JsonResult {Data = new {result = "success"}};
+            }
+            catch (Exception ex)
+            {
+                return new JsonResult {Data = new {result = "error", msg = ex.Message}};
+            }
         }
     }
 }

@@ -62,8 +62,8 @@ function markInput(inputDiv, valid) {
     }
 
     if ($('.validate.has-error').length == 0) {
-        $('#btn-submit').removeAttr('disabled');
+        $('.btn-submit').removeAttr('disabled');
     } else {
-        $('#btn-submit').attr('disabled', 'disabled');
+        $('.btn-submit').attr('disabled', 'disabled');
     }
 }
