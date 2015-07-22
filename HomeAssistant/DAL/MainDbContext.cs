@@ -11,7 +11,7 @@ namespace DAL
 
         protected MainDbContext(string nameOrConnectionString) : base(nameOrConnectionString)
         {
-            Database.SetInitializer(new DropCreateDatabaseAlways<MainDbContext>());
+            //Database.SetInitializer(new DropCreateDatabaseAlways<MainDbContext>());
         }
 
         public static MainDbContext GetInstance(string nameOrConnectionString)
