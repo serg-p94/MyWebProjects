@@ -101,5 +101,18 @@ namespace UI.WebApp.Controllers
                 Data = new {result = "success", message = msgData}
             };
         }
+
+        [Authorize(Roles = UserRole.ReadForum)]
+        public JsonResult GetMessages(int discussionId, int offset, int count)
+        {
+            var dm = Loader.GetDiscussionManager();
+            var messages = dm.Discussions.Single(d => d.Id == discussionId).Messages;
+            var converer = new Converter();
+            var messagesLeft = messages.Count - offset;
+            var data =
+                messages.GetRange(offset, count <= messagesLeft ? count : messagesLeft)
+                    .Select(msg => converer.GetDataObject(msg));
+            return new JsonResult {Data = data, JsonRequestBehavior = JsonRequestBehavior.AllowGet};
+        }
     }
 }

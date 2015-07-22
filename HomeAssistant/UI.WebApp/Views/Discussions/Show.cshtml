@@ -7,15 +7,89 @@
 
 <h1 class="text-center page-header">@Model.Title</h1>
 
-<div id="msg-container"></div>
+<div id="chat-container" style="border: 1px solid red;">
+    <div id="msg-container"></div>
 
-@if (User.IsInRole("Write Forum"))
-{
-    <div class="form-horizontal">
-        @Html.TextArea("message", new {@class = "form-control", rows = 3, id = "msg-area"})
-        <button id="btn-send" class="btn btn-info clickable" onclick="sendMessage(@Model.Id, $('#msg-area').val(), '@Url.Action("SendMessage")')" style="margin-top: 10px">Send</button>
+    <div id="msg-controls">
+        <div class="text-center">
+            <ul id="pages" class="pagination pagination-sm">
+                <li id="page-prev"><a href="#" onclick="if (!$('#page-prev').hasClass('disabled')) {onPageSelect(parseInt($('#pages .active a').text())-1);}">&laquo;</a></li>
+                @{
+                    const int messagesOnPage = 2;
+                    var pagesNumber = Model.Messages.Count/messagesOnPage + (Model.Messages.Count%messagesOnPage == 0 ? 0 : 1);
+                    for (var i = 1; i <= pagesNumber; i++)
+                    {
+                        <text><li id="page-@(i)"><a href="#" onclick="onPageSelect(@(i));">@i</a></li></text>
+                    }
+                }
+                <li id="page-next"><a href="#" onclick="if (!$('#page-next').hasClass('disabled')) {onPageSelect(parseInt($('#pages .active a').text())+1);}">&raquo;</a></li>
+            </ul>
+        </div>
+
+        @if (User.IsInRole("Write Forum"))
+        {
+            <div class="">
+                @Html.TextArea("message", new {@class = "form-control", rows = 3, id = "msg-area"})
+                <button id="btn-send" class="btn btn-info" onclick="sendMessage(@Model.Id, $('#msg-area').val(), '@Url.Action("SendMessage")')" style="margin-top: 10px">Send</button>
+            </div>
+        }
     </div>
-}
+</div>
+
+<script type="text/javascript">
+    function onPageSelect(number) {
+        if (typeof(this.selectedPage) != "undefined") {
+            if (this.selectedPage == number) {
+                return;
+            }
+            $('#page-' + this.selectedPage).removeClass('active');
+        }
+        this.selectedPage = number;
+        $('#page-' + number).addClass('active');
+        if (number == 1) {
+            $('#page-prev').addClass('disabled');
+        } else {
+            $('#page-prev').removeClass('disabled');
+        }
+        if (number == @(pagesNumber)) {
+            $('#page-next').addClass('disabled');
+        } else {
+            $('#page-next').removeClass('disabled');
+        }
+
+        $('#msg-container').empty();
+        var options = {
+            url: '@Url.Action("GetMessages")',
+            data: {
+                discussionId: @(Model.Id),
+                offset: @(messagesOnPage) * (number-1),
+                count: @(messagesOnPage)
+            },
+            success: function(messages) {
+                messages.forEach(viewMessage);
+            }
+        };
+        $.ajax(options);
+    };
+</script>
+
+<script type="text/javascript">
+    function setChatHeight() {
+        var p = $('#chat-container').position();
+        var h = window.innerHeight;
+        var chatContainerH = h - p.top - 10;
+        $('#chat-container').css('height', chatContainerH + 'px');
+
+        var msgContainerH = chatContainerH - $('#msg-controls')[0].clientHeight;
+
+        $('#msg-container').css('height', msgContainerH + 'px');
+    };
+
+    $(function() {
+        setChatHeight();
+        $(window).on('resize', setChatHeight);
+    });
+</script>
 
 <script type="text/javascript">
     lastMsgId = 0;
@@ -71,22 +145,22 @@
                 .click(function() {
                     removeMessage(@Model.Id, $(this).parentsUntil('.msg-div').parent(),
                         '@Url.Action("RemoveMessage")');
-        }));
-    }
-    msgDate.append($(document.createElement('div'))
-        .addClass('text-center text-muted')
-        .append(msg.Date));
+                }));
+        }
+        msgDate.append($(document.createElement('div'))
+            .addClass('text-center text-muted')
+            .append(msg.Date));
 
-    msgDiv.append(msgDate);
-    msgDiv.append($(document.createElement('div')).addClass('msg-body').append($(document.createElement('div'))
-        .append($(document.createElement('b')).addClass('text-info').append(msg.Author.Login).append('<br/>'))
-        .append(msg.Body)));
+        msgDiv.append(msgDate);
+        msgDiv.append($(document.createElement('div')).addClass('msg-body').append($(document.createElement('div'))
+            .append($(document.createElement('b')).addClass('text-info').append(msg.Author.Login).append('<br/>'))
+            .append(msg.Body)));
 
-    msgContainer.append(msgDiv);
+        msgContainer.append(msgDiv);
 
-    if (lastMsgId < msg.Id) {
-        lastMsgId = msg.Id;
-    }
+        if (lastMsgId < msg.Id) {
+            lastMsgId = msg.Id;
+        }
     }
 
     function sendMessage(discussionId, msg, url) {
