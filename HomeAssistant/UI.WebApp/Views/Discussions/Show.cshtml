@@ -9,6 +9,14 @@
 
 <div id="msg-container"></div>
 
+@if (User.IsInRole("Write Forum"))
+{
+    <div class="form-horizontal">
+        @Html.TextArea("message", new {@class = "form-control", rows = 3, id = "msg-area"})
+        <button id="btn-send" class="btn btn-info clickable" onclick="sendMessage(@Model.Id, $('#msg-area').val(), '@Url.Action("SendMessage")')" style="margin-top: 10px">Send</button>
+    </div>
+}
+
 <script type="text/javascript">
     lastMsgId = 0;
 
@@ -63,22 +71,22 @@
                 .click(function() {
                     removeMessage(@Model.Id, $(this).parentsUntil('.msg-div').parent(),
                         '@Url.Action("RemoveMessage")');
-                }));
-        }
-        msgDate.append($(document.createElement('div'))
-            .addClass('text-center text-muted')
-            .append(msg.Date));
+        }));
+    }
+    msgDate.append($(document.createElement('div'))
+        .addClass('text-center text-muted')
+        .append(msg.Date));
 
-        msgDiv.append(msgDate);
-        msgDiv.append($(document.createElement('div')).addClass('msg-body').append($(document.createElement('div'))
-            .append($(document.createElement('b')).addClass('text-info').append(msg.Author.Login).append('<br/>'))
-            .append(msg.Body)));
+    msgDiv.append(msgDate);
+    msgDiv.append($(document.createElement('div')).addClass('msg-body').append($(document.createElement('div'))
+        .append($(document.createElement('b')).addClass('text-info').append(msg.Author.Login).append('<br/>'))
+        .append(msg.Body)));
 
-        msgContainer.append(msgDiv);
+    msgContainer.append(msgDiv);
 
-        if (lastMsgId < msg.Id) {
-            lastMsgId = msg.Id;
-        }
+    if (lastMsgId < msg.Id) {
+        lastMsgId = msg.Id;
+    }
     }
 
     function sendMessage(discussionId, msg, url) {
@@ -124,11 +132,3 @@
         $.ajax(options);
     }
 </script>
-
-@if (User.IsInRole("Write Forum"))
-{
-    <div class="form-horizontal">
-        @Html.TextArea("message", new {@class = "form-control", rows = 3, id = "msg-area"})
-        <button id="btn-send" class="btn btn-info clickable" onclick="sendMessage(@Model.Id, $('#msg-area').val(), '@Url.Action("SendMessage")')" style="margin-top: 10px">Send</button>
-    </div>
-}
