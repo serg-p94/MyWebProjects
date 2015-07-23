@@ -56,8 +56,31 @@
         } else {
             $('#page-next').removeClass('disabled');
         }
-
+        AddMissingPages();
         viewMessagesPage(number);
+    };
+
+    function AddMissingPages() {
+        var options= {
+            url: '@Url.Action("CountMessages")',
+            method: 'POST',
+            data:{discussionId:@Model.Id},
+            success:function(data) {
+                var msgCount = data.value;
+                var pagesCount = $('#pages li').length - 2;
+                while (pagesCount < parseInt(msgCount / @(messagesOnPage))) {
+                        AddPage();
+                        pagesCount++;
+                    }
+                }
+        }
+        $.ajax(options);
+    };
+
+    function AddPage() {
+        var number = $('#pages li').length - 1;
+        var s = '<li id="page-"' + number + '><a href="#" onclick="onPageSelect(' + number + ');">' + number + '</a></li>';
+        $('#pages #page-' + (number - 1)).after(s);
     };
 </script>
 
@@ -80,7 +103,6 @@
 </script>
 
 <script type="text/javascript">
-    lastMsgId = 0;
     timer = 0;
 
     $(function() {
@@ -134,18 +156,6 @@
         $.ajax(options);
     }
 
-    function viewAllMessages() {
-        var options = {
-            url: '@Url.Action("GetAllMessages")',
-            data: { discussionId: @Model.Id, lastMsgId: lastMsgId },
-            cache: false,
-            success: function(data) {
-                data.forEach(viewMessage);
-            }
-        };
-        $.ajax(options);
-    }
-
     function viewMessage(msg) {
         if (typeof (msg) == "undefined") {
             return;
@@ -188,10 +198,6 @@
             .append($(document.createElement('b')).addClass('text-info').append(msg.Author.Login).append('<br/>'))
             .append(msg.Body)));
         msgContainer.append(msgDiv);
-
-        if (lastMsgId < msg.Id) {
-            lastMsgId = msg.Id;
-        }
     }
 
     function sendMessage(discussionId, msg, url) {

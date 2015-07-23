@@ -114,5 +114,20 @@ namespace UI.WebApp.Controllers
                     .Select(msg => converer.GetDataObject(msg));
             return new JsonResult {Data = data, JsonRequestBehavior = JsonRequestBehavior.AllowGet};
         }
+
+        [Authorize(Roles = UserRole.ReadForum)]
+        public JsonResult CountMessages(int discussionId)
+        {
+            var dm = Loader.GetDiscussionManager();
+            var discussion = dm.Discussions.Single(d => d.Id == discussionId);
+            return new JsonResult
+            {
+                Data = new
+                {
+                    result = "success",
+                    value = discussion.Messages.Count
+                }
+            };
+        }
     }
 }
