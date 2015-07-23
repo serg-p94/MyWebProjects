@@ -26,15 +26,21 @@ else
     {
         <div class="form-group has-feedback">
             <label class="col-xs-2 control-label">Login</label>
-            <div class="col-xs-10 login-div validate">
-                @Html.TextBox("login", "", new {@class = "form-control", placeholder = "Login", required = "", onchange = "checkLoginIsEmpty('.login-div','" + Url.Action("Exists") + "')"})
+            <div id="login-div" class="col-xs-10 validate">
+                @Html.TextBox("login", "", new {@class = "form-control", placeholder = "Login", required = "", onchange = "checkLoginIsEmpty('#login-div','" + Url.Action("Exists") + "')"})
             </div>
         </div>
 
         <div class="form-group">
             <label class="col-xs-2 control-label">Password</label>
-            <div class="col-xs-10">
+            <div id="pwd-div" class="col-xs-10">
                 @Html.TextBox("password", "", new {@class = "form-control", placeholder = "Password", required = ""})
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div id="pwd-conf-div" class="col-xs-offset-2 col-xs-10 has-feedback validate">
+                @Html.TextBox("password", "", new {@class = "form-control", placeholder = "Password Confirmation", required = "", oninput = "onPwdConfirmation('#pwd-div', '#pwd-conf-div')"})
             </div>
         </div>
 
@@ -66,3 +72,18 @@ else
         <button class="btn btn-default pull-right btn-submit" type="submit">Register</button>
     }
 }
+
+<script type="text/javascript">
+    function onPwdConfirmation(pwdDiv, confDiv) {
+        var jConfDiv = $(confDiv);
+
+        var pwd = $(pwdDiv).find('input').first().val();
+        var conf = jConfDiv.find('input').first().val();
+
+        if (conf == "") {
+            markInput(confDiv);
+        } else {
+            markInput(confDiv, pwd == conf);
+        }
+    };
+</script>

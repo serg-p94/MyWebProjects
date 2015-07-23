@@ -57,19 +57,7 @@
             $('#page-next').removeClass('disabled');
         }
 
-        $('#msg-container').empty();
-        var options = {
-            url: '@Url.Action("GetMessages")',
-            data: {
-                discussionId: @(Model.Id),
-                offset: @(messagesOnPage) * (number-1),
-                count: @(messagesOnPage)
-            },
-            success: function(messages) {
-                messages.forEach(viewMessage);
-            }
-        };
-        $.ajax(options);
+        viewMessagesPage(number);
     };
 </script>
 
@@ -93,6 +81,7 @@
 
 <script type="text/javascript">
     lastMsgId = 0;
+    timer = 0;
 
     $(function() {
         $('#msg-area').keydown(function(event) {
@@ -101,8 +90,49 @@
                 $('#btn-send').click();
             }
         });
-        setInterval(viewAllMessages, 1000);
+        //setInterval(viewAllMessages, 1000);
     });
+
+    function viewMessagesPage(number) {
+        if (timer != 0) {
+            clearInterval(timer);
+            timer = 0;
+        }
+        $('#msg-container').empty();
+        var messagesOnPage = 0;
+        var options = {
+            url: '@Url.Action("GetMessages")',
+            method: 'POST',
+            data: {
+                discussionId: @(Model.Id),
+                offset: @(messagesOnPage) * (number - 1),
+                count: @(messagesOnPage)
+            },
+            success: function(messages) {
+                messagesOnPage = messages.length;
+                messages.forEach(viewMessage);
+                if (messagesOnPage < @(messagesOnPage)) {
+                    timer = setInterval(function() {
+                        var options = {
+                    url: '@Url.Action("GetMessages")',
+                    method: 'POST',
+                            data: {
+                                discussionId: @(Model.Id),
+                                offset: @(messagesOnPage) * (number - 1) + messagesOnPage,
+                                count: @(messagesOnPage) - messagesOnPage
+                            },
+                            success: function(messages) {
+                                messagesOnPage += messages.length;
+                                messages.forEach(viewMessage);
+                            }
+                        };
+                        $.ajax(options);
+                    }, 1000);
+                }
+            }
+        };
+        $.ajax(options);
+    }
 
     function viewAllMessages() {
         var options = {
@@ -143,10 +173,12 @@
                 .addClass('glyphicon-remove')
                 .addClass('pull-right')
                 .click(function() {
-                    removeMessage(@Model.Id, $(this).parentsUntil('.msg-div').parent(),
-                        '@Url.Action("RemoveMessage")');
-                }));
+                        removeMessage(@Model.Id, $(this).parentsUntil('.msg-div').parent(),
+                            '@Url.Action("RemoveMessage")');
+                    }
+                ));
         }
+
         msgDate.append($(document.createElement('div'))
             .addClass('text-center text-muted')
             .append(msg.Date));
@@ -155,7 +187,6 @@
         msgDiv.append($(document.createElement('div')).addClass('msg-body').append($(document.createElement('div'))
             .append($(document.createElement('b')).addClass('text-info').append(msg.Author.Login).append('<br/>'))
             .append(msg.Body)));
-
         msgContainer.append(msgDiv);
 
         if (lastMsgId < msg.Id) {
@@ -173,7 +204,7 @@
             },
             success: function(data) {
                 $('#msg-area').val('');
-                viewMessage(data.message);
+                //viewMessage(data.message);
             }
         };
         $.ajax(options);
