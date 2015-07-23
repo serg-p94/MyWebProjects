@@ -52,7 +52,9 @@
     <Compile Include="Users\IUserValidator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Users\Permission.cs" />
+    <Compile Include="Users\PermissionEqualityComparer.cs" />
     <Compile Include="Users\User.cs" />
+    <Compile Include="Users\UserEqualityComparer.cs" />
     <Compile Include="Users\UserRegistrationResult.cs" />
     <Compile Include="Users\UserValidationResult.cs" />
   </ItemGroup>

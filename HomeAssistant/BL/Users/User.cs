@@ -17,7 +17,7 @@ namespace BL.Users
 
         public User()
         {
-            Permissions = new HashSet<Permission>();
+            Permissions = new HashSet<Permission>(new PermissionEqualityComparer());
             IsMale = true;
         }
 

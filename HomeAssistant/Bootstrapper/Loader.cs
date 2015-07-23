@@ -11,8 +11,8 @@ namespace Bootstrapper
 
         static Loader()
         {
-            Container.RegisterType<IUserManager, UserManager>(new ContainerControlledLifetimeManager());
-            Container.RegisterType<IPermissionManager, UserManager>(new ContainerControlledLifetimeManager());
+            Container.RegisterType<IUserManager, UserManager>();
+            Container.RegisterType<IPermissionManager, UserManager>();
 
             Container.RegisterType<IDiscussionManager, DiscussionManager>();
 

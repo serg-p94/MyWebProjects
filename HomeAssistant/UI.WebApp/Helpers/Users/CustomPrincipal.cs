@@ -9,7 +9,7 @@ namespace UI.WebApp.Helpers.Users
     {
         protected CustomPrincipal()
         {
-            Permissions = new HashSet<Permission>();
+            Permissions = new HashSet<Permission>(new PermissionEqualityComparer());
         }
 
         public CustomPrincipal(string id) : this()

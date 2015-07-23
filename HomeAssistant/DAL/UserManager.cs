@@ -14,7 +14,7 @@ namespace DAL
 
         public UserManager()
         {
-            _context = MainDbContext.GetInstance(NameOrConnectionString);
+            _context = new MainDbContext(NameOrConnectionString);
         }
 
         public UserValidationResult Validate(string login, string password)
